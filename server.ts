@@ -18,6 +18,7 @@ import stripeRouter from './routes/stripeRoute'
 // const multiparty = require("connect-multiparty");
 
 // Other files that are not yet included
+
 // var httpMsgs = require("./app/httpmsgs");
 // require("./config/passport")(passport);
 // require("./routes/stripe.js")(stripe, passport);
@@ -26,11 +27,6 @@ const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = process.env;
 // do we need this? 
 // const arguments = process.argv.splice(2);
 
-var settings = {
-  webPort: SNAPIN_WEBPORT,
-};
-// since this is coming from .env we probably don't need this : 
-// settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
 
 
@@ -200,8 +196,8 @@ if (ENV === "dev") {
     key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
     cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
   };
-  https.createServer(options, app).listen(settings.webPort, function () {
+  https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
     // We should be doig a logger 
-    console.log("Express server listening on port " + settings.webPort);
+    console.log("Express server listening on port " + SNAPIN_WEBPORT);
   });
 }
