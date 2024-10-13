@@ -33,6 +33,7 @@ var settings = {
 // settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
 
+app.use(express.static('views'));
 // These 2 lines should replace bodyparser along with others
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -122,7 +123,7 @@ app.set("view engine", "ejs");
 // app.use(morgan("dev"));
 
 app.use(cookieParser());
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/views`));
 
 // check if needed
 // app.use(flash());
@@ -148,6 +149,11 @@ app.get("/healthcheck", (req, res) => {
 app.get("/", function (req, res) {
   res.render("auth/splash.ejs", { user: null });
 });
+
+app.get('/user-login', (req, res) => {
+  res.render('auth/login.ejs')
+});
+
 app.get("/home", function (req, res) {
   // ensure req.user exists, seems like on a request object in express it does not
   res.render("auth/splash.ejs", { user: req?.user });
@@ -173,6 +179,9 @@ app.get("/home", function (req, res) {
 // const stripe = express.Router();
 // app.use("/stripe", stripe);
 
+// For this, instead of doing this for route does not exist maybe:  
+// if route does not exist 
+// else send them back to their default page when logging in 
 app.use((req, res, next) => {
   // If no previous route/method matched, we end up here (404 Not Found)
   console.log(`Route Invalid: ${req.socket.remoteAddress}, ${req.ip}`);
