@@ -33,8 +33,9 @@ var settings = {
 // settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
 
-// This line should replace bodyparser along with others
+// These 2 lines should replace bodyparser along with others
 app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // This probably should be checked to make sure we still want this
 // app.use(cors());
@@ -55,8 +56,6 @@ const appSession = expressSession({
 //   })
 // );
 
-// Middleware to parse URL-encoded data with a size limit (This should replace body parser)
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const blockedIps = [
   "192.168.1.1",
@@ -206,6 +205,7 @@ app.use(function (req, res) {
 if (ENV === "dev") {
   // When running locally 
   app.listen(SNAPIN_WEBPORT, () => {
+    // This is fine, it's only locally, but could be ran in logger as well
     console.log(`Example app listening on port ${SNAPIN_WEBPORT}`);
   });
 } else {
@@ -215,6 +215,7 @@ if (ENV === "dev") {
     cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
   };
   https.createServer(options, app).listen(settings.webPort, function () {
+    // We should be doig a logger 
     console.log("Express server listening on port " + settings.webPort);
   });
 }
