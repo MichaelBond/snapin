@@ -5,6 +5,8 @@ import https from 'https'
 import express from 'express'
 import expressSession from "express-session";
 import cookieParser from 'cookie-parser'
+import stripeRouter from './routes/stripeRoute'
+// import middlewareFunction from './middleware/logMiddleware'
 
 // Probably should not have especially in prod 
 
@@ -32,6 +34,12 @@ var settings = {
 // since this is coming from .env we probably don't need this : 
 // settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
+
+
+app.use('/api/stripe', stripeRouter)
+
+// const stripe = express.Router();
+// app.use("/stripe", );
 
 // These 2 lines should replace bodyparser along with others
 app.use(express.json({ limit: '50mb' }));
@@ -115,7 +123,7 @@ app.set("view engine", "ejs");
 // app.use("/secure", express.static(`${__dirname}/sites`));
 // app.use("/secure/sites", express.static(`${__dirname}/sites`));
 // app.use("/secure/smartwebpro9", express.static(`${__dirname}/sites`));
-//app.use("/stripe", express.static(`${__dirname}/stripe`));
+// app.use("/stripe", express.static(`${__dirname}/stripe`));
 
 // check if we need this
 
@@ -170,8 +178,7 @@ app.get("/home", function (req, res) {
 
 // PROTECTED ROUTES
 
-// const stripe = express.Router();
-// app.use("/stripe", stripe);
+
 
 app.use((req, res, next) => {
   // If no previous route/method matched, we end up here (404 Not Found)
