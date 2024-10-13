@@ -51,6 +51,9 @@ type Currency =
 type Product = {
   name: string
 }
+type Plan = {
+  plan: any
+}
 
 class StripeError extends Error {
   public status: number;
@@ -78,7 +81,7 @@ export default class StripeServiceClass {
       const plans = await this.stripe.plans.list({ limit });
       return { err: null, data: plans };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async getBalance() {
@@ -86,7 +89,7 @@ export default class StripeServiceClass {
       const balance = await this.stripe.balance.retrieve();
       return { err: null, data: balance };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async getBalanceHistoryById(id: string) {
@@ -94,7 +97,7 @@ export default class StripeServiceClass {
       const balanceTransaction = await this.stripe.balanceTransactions.retrieve(id);
       return { err: null, data: balanceTransaction };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async getPlanById(id: string) {
@@ -102,7 +105,7 @@ export default class StripeServiceClass {
       const balanceTransaction = await this.stripe.plans.retrieve(id);
       return { err: null, data: balanceTransaction };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async createPlan(params: { amount: number, currency: Currency, interval: PlanInterval, product: Product }) {
@@ -110,7 +113,7 @@ export default class StripeServiceClass {
       const plan = await this.stripe.plans.create(params);
       return { err: null, data: plan };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   // can create plan type later 
@@ -119,7 +122,7 @@ export default class StripeServiceClass {
       const updatedPlan = await this.stripe.plans.update(id, plan);
       return { err: null, data: updatedPlan };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async deletePlan(id: string) {
@@ -127,7 +130,7 @@ export default class StripeServiceClass {
       const plan = await this.stripe.plans.del(id);
       return { err: null, data: plan };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   //   // Charge Functions
@@ -136,7 +139,7 @@ export default class StripeServiceClass {
       const charges = await this.stripe.charges.list({ limit });
       return { err: null, data: charges };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async getChargeById(id: string) {
@@ -144,7 +147,7 @@ export default class StripeServiceClass {
       const charge = await this.stripe.charges.retrieve(id);
       return { err: null, data: charge };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async makeCharge(params: { account: string, amount?: number, currency: Currency, description: string, source: string }) {
@@ -152,7 +155,7 @@ export default class StripeServiceClass {
       const charge = await this.stripe.charges.create(params);
       return { err: null, data: charge };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   async captureChargeById(id: string) {
@@ -160,7 +163,7 @@ export default class StripeServiceClass {
       const charge = await this.stripe.charges.capture(id);
       return { err: null, data: charge };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   // params will be typed when we know what is needed 
@@ -169,264 +172,203 @@ export default class StripeServiceClass {
       const charge = await this.stripe.charges.capture(id, params);
       return { err: null, data: charge };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
   //   // Customer Functions
-  //   listCustomers: async function (req, res) {
-  //     console.log("listCustomers");
-  //     try {
-  //       const customers = await this.stripe.customers.list({ limit: 10 });
-  //       return { err: null, data: customers };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   getCustomerById: async function (req, res) {
-  //     console.log("getCustomerById");
-  //     const ID = req.params.id;
-  //     try {
-  //       const customer = await this.stripe.customers.retrieve(ID);
-  //       return { err: null, data: customer };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   createCustomer: async function (req, res) {
-  //     console.log("createCustomer");
-  //     const Parameters = {
-  //       name: req.body.name,
-  //       phone: req.body.phone,
-  //       email: req.body.email, //"brycerbond@gmail.com",
-  //       description: req.body.description, //"This is a description, hehe",
-  //       source: req.body.source, //"tok_visa"
+  async listCustomers(limit: number = 10) {
+    try {
+      const customers = await this.stripe.customers.list({ limit });
+      return { err: null, data: customers };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async getCustomerById(id: string) {
+    try {
+      const customer = await this.stripe.customers.retrieve(id);
+      return { err: null, data: customer };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async createCustomer(params: { name: string, phone: string, email: string, desciption: string, source: string }) {
+    try {
+      const customer = await this.stripe.customers.create(params);
+      return { err: null, data: customer };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  // fill out the params later
+  async updateCustomer(id: string, params: any) {
+    try {
+      const customer = await this.stripe.customers.update(id, params);
+      return { err: null, data: customer };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async deleteCustomer(id: string) {
+    try {
+      const confirmation = await this.stripe.customers.del(id);
+      return { err: null, data: confirmation };
+    } catch (error) {
+      this.errorHandler(error);
+      return { err: error, data: null };
+    }
+  }
+  // Products
+  // Parameters will need to be updated as they get used, some attributes that get past are optional 
+  async createProductService(params: { name: string }) {
+    try {
+      const product = await this.stripe.products.create(params);
+      return { err: null, data: product };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+
+  // this needs to be be turned into 2 functions, and the controller needs to be this so leaving in place for now 
+  // createPricedProduct() {
+  //   console.log("createPricedProduct");
+  //   const ProdParameters = {
+  //     name: req.body.name,
+  //     type: req.body.type,
+  //     description: req.body.description,
+  //   };
+  //   try {
+  //     const product = await this.stripe.products.create(ProdParameters);
+  //     const PriceParameters = {
+  //       unit_amount: req.body.unit_amount,
+  //       currency: req.body.currency,
+  //       recurring: req.body.recurring,
+  //       product_id: product.id,
   //     };
-  //     try {
-  //       const customer = await this.stripe.customers.create(Parameters);
-  //       return { err: null, data: customer };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   updateCustomer: async function (req, res) {
-  //     console.log("updateCustomer");
-  //     const ID = req.params.id;
-  //     const Parameters = req.body;
-  //     try {
-  //       const customer = await this.stripe.customers.update(ID, Parameters);
-  //       return { err: null, data: customer };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   deleteCustomer: async function (req, res) {
-  //     console.log("deleteCustomer");
-  //     const ID = req.params.id;
-  //     try {
-  //       const confirmation = await this.stripe.customers.del(ID);
-  //       return { err: null, data: confirmation };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   // Products
-  //   createProductService: async function (req, res) {
-  //     console.log("createProductService");
-  //     const Parameters = {
-  //       name: req.body.name,
-  //       type: req.body.type,
-  //     };
-  //     try {
-  //       const product = await this.stripe.products.create(Parameters);
-  //       return { err: null, data: product };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   createPricedProduct: async function (req, res) {
-  //     console.log("createPricedProduct");
-  //     const ProdParameters = {
-  //       name: req.body.name,
-  //       type: req.body.type,
-  //       description: req.body.description,
-  //     };
-  //     try {
-  //       const product = await this.stripe.products.create(ProdParameters);
-  //       const PriceParameters = {
-  //         unit_amount: req.body.unit_amount,
-  //         currency: req.body.currency,
-  //         recurring: req.body.recurring,
-  //         product_id: product.id,
-  //       };
-  //       const price = await this.stripe.prices.create(PriceParameters);
-  //       return { err: null, data: { product: product, price: price } };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   listProducts: async function (req, res) {
-  //     console.log("listProducts");
-  //     try {
-  //       const products = await this.stripe.products.list({ limit: 10 });
-  //       return { err: null, data: customers };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   getProductById: async function (req, res) {
-  //     console.log("getProductById (ID): ", req.params.id);
-  //     const ID = req.params.id;
-  //     try {
-  //       const product = await this.stripe.products.retrieve(ID);
-  //       return { err: null, data: product };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   updateProduct: async function (req, res) {
-  //     console.log("updateProduct (ID): ", req.params.id);
-  //     const ID = req.params.id;
-  //     const Parameters = req.body;
-  //     try {
-  //       const product = await this.stripe.products.update(ID, Parameters);
-  //       return { err: null, data: product };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   deleteProduct: async function (req, res) {
-  //     console.log("deleteProduct(ID): ", req.params.id);
-  //     const ID = req.params.id;
-  //     try {
-  //       const product = await this.stripe.products.update(ID);
-  //       return { err: null, data: product };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
+  //     const price = await this.stripe.prices.create(PriceParameters);
+  //     return { err: null, data: { product: product, price: price } };
+  //   } catch (error) {
+  //     throw this.errorHandler(error)
+  //   }
+  // }
+  async listProducts(limit: number = 10) {
+    try {
+      const products = await this.stripe.products.list({ limit });
+      return { err: null, data: products };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async getProductById(id: string) {
+    try {
+      const product = await this.stripe.products.retrieve(id);
+      return { err: null, data: product };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  // update params when nec 
+  async updateProduct(id: string, params: any) {
+    try {
+      const product = await this.stripe.products.update(id, params);
+      return { err: null, data: product };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async deleteProduct(id: string) {
+    try {
+      const product = await this.stripe.products.update(id);
+      return { err: null, data: product };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
   //   // Stripe Subscriptions
   async getSubscriptionById(id: string) {
     try {
       const subscription = await this.stripe.subscriptions.retrieve(id);
       return { err: null, data: subscription };
     } catch (error) {
-      throw this.errorHander(error);
+      throw this.errorHandler(error)
     }
   }
-  //   listSubscriptions: async function (req, res) {
-  //     console.log("listSubscriptions");
-  //     try {
-  //       const subscriptions = await this.stripe.subscriptions.list({ limit: 3 });
-  //       return { err: null, data: subscriptions };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   createSubscription: async function (req, res) {
-  //     console.log("createSubscription");
-  //     const Parameters = {
-  //       customer: req.body.customer,
-  //       items: [
-  //         {
-  //           plan: req.body.plan,
-  //         },
-  //       ],
-  //     };
-  //     try {
-  //       const subscription = await this.stripe.subscriptions.create(Parameters);
-  //       return { err: null, data: customer };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   updateSubscription: async function (req, res) {
-  //     console.log("updateSubscription (ID): ", req.params.id);
-  //     const ID = req.params.id;
-  //     const Parameters = req.body;
-  //     try {
-  //       const subscription = await this.stripe.subscriptions.update(ID, Parameters);
-  //       return { err: null, data: subscription };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   deleteSubscription: async function (req, res) {
-  //     console.log("deleteSubscription(ID): ", req.params.id);
-  //     const ID = req.params.id;
-  //     try {
-  //       const confirmation = await this.stripe.subscription.del(ID);
-  //       return { err: null, data: confirmation };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
+  async listSubscriptions(limit: number = 3) {
+    try {
+      const subscriptions = await this.stripe.subscriptions.list({ limit });
+      return { err: null, data: subscriptions };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  // Plan data type needs to be updated when nec 
+  async createSubscription(params: { customer: string, items: Plan[] }) {
+    try {
+      const subscription = await this.stripe.subscriptions.create(params);
+      return { err: null, data: subscription };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  // params need to be figured out later and type or interface should be added for it 
+  async updateSubscription(id: string, params: any) {
+    try {
+      const subscription = await this.stripe.subscriptions.update(id, params);
+      return { err: null, data: subscription };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  async deleteSubscription(id: string) {
+    try {
+      const confirmation = await this.stripe.subscriptions.cancel(id)
+      return { err: null, data: confirmation };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
   //   // Stripe Sources
-  //   createSource: async function (req, res) {
-  //     console.log("createSource");
-  //     const Parameters = {
-  //       type: req.body.transaction_type,
-  //       currency: req.body.currency,
-  //       owner: {
-  //         email: req.body.email,
-  //       },
-  //       items: [
-  //         {
-  //           plan: req.body.plan,
-  //         },
-  //       ],
-  //     };
-  //     try {
-  //       const subscription = await this.stripe.sources.create(Parameters);
-  //       return { err: null, data: customer };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
-  //   receiveToken: async function (req, res) {
-  //     console.log("createSource");
-  //     const Parameters = {
-  //       name: req.body.name,
-  //       email: req.body.email,
-  //       description: req.body.description, // This is from using a token to generate a customer with a ACH set up, and to verify the account
-  //     };
+  async createSource(params: {
+    type: string
+    currency: Currency,
+    owner: { email: string }
+    items: Plan[]
+  }) {
+    try {
+      const subscription = await this.stripe.sources.create(params);
+      return { err: null, data: subscription };
+    } catch (error) {
+      throw this.errorHandler(error)
+    }
+  }
+  // This should be divided up into 2 methods, and a method in a controller should call theses 
+  //async receiveToken(params: { name: string, emial: string, description: string }) {
+  //   const Parameters = {
+  //     name: params.name,
+  //     email: params.email,
+  //     description: params.description, // This is from using a token to generate a customer with a ACH set up, and to verify the account
+  //   };
 
-  //     try {
-  //       const customer = await this.stripe.customers.create(Parameters);
-  //       const source = await this.stripe.source.createSource(customer.id, {
-  //         source: req.body.token,
-  //       });
-  //       const bankAccount = await this.stripe.customers.verifySource(
-  //         source.customer,
-  //         source.id,
-  //         {
-  //           amounts: [32, 45],
-  //         }
-  //       );
+  //   try {
+  //     const customer = await this.stripe.customers.create(Parameters);
+  //     const source = await this.stripe.source.createSource(customer.id, {
+  //       source: req.body.token,
+  //     });
+  //     const bankAccount = await this.stripe.customers.verifySource(
+  //       source.customer,
+  //       source.id,
+  //       {
+  //         amounts: [32, 45],
+  //       }
+  //     );
 
-  //       return { err: null, data: bankAccount };
-  //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
-  //     }
-  //   },
+  //     return { err: null, data: bankAccount };
+  //   } catch (error) {
+  //     throw this.errorHandler(error)
+  //   }
+  // }
 
-  //   processEvents: async function (req, res) {
+  //   processEvents () {
   //     console.log("processEvents");
   //     const signed = req.headers["stripe-signature"];
   //     const parts = signed.split(",");
@@ -471,9 +413,10 @@ export default class StripeServiceClass {
   //       this.errorHandling(error);
   //       res.sendStatus(400);
   //     }
-  //   },
+  //   }
 
-  //   createWebhook: async function (endpoint, events) {
+  // This just needs to be a route in StripeRoutes
+  //   createWebhook (endpoint, events) {
   //     console.log("createWebhook");
   //     const url = `${endpoint}`;
   //     try {
@@ -483,11 +426,10 @@ export default class StripeServiceClass {
   //       });
   //       return { err: null, data: endpoint };
   //     } catch (error) {
-  //       this.errorHandling(error);
-  //       return { err: error, data: null };
+  // throw this.errorHandler(error)
   //     }
-  //   },
-  private errorHander(error: any) {
+  //   }
+  private errorHandler(error: any) {
     const errorType = error.type as StripeErrorType;
     let message: string
     const status: number = error.code
@@ -529,8 +471,8 @@ export default class StripeServiceClass {
 //       currency: "usd",
 //       source: "tok_mastercard",
 //       description: "My first payment",
-//     },
-//   },
+//     }
+//   }
 //   ENABLED_EVENTS: [
 //     "payment_intent.payment_failed",
 //     "payment_intent.succeeded",
@@ -555,7 +497,7 @@ export default class StripeServiceClass {
 //         break;
 //     }
 //     return err;
-//   },
+//   }
 
 
 
