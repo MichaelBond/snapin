@@ -1,15 +1,17 @@
-// JavaScript source code
-require("dotenv").config();
-const fs = require("fs");
-const https = require("https");
-const express = require("express");
-const expressSession = require("express-session");
-const cookieParser = require("cookie-parser");
+import dotenv from 'dotenv';
+dotenv.config()
+import fs from 'fs'
+import https from 'https'
+import express from 'express'
+import expressSession from "express-session";
+import cookieParser from 'cookie-parser'
 
-// Probably should not have
+// Probably should not have especially in prod 
+
 // const cors = require("cors");
 
 // Need to install
+
 // const passport = require("passport");
 // const flash = require("connect-flash");
 // const morgan = require("morgan");
@@ -19,30 +21,27 @@ const cookieParser = require("cookie-parser");
 // var httpMsgs = require("./app/httpmsgs");
 // require("./config/passport")(passport);
 // require("./routes/stripe.js")(stripe, passport);
-const { ENV, SNAPIN_WEBPORT } = process.env;
-const arguments = process.argv.splice(2);
+const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = process.env;
+
+// do we need this? 
+// const arguments = process.argv.splice(2);
 
 var settings = {
   webPort: SNAPIN_WEBPORT,
 };
-
-settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
-let options;
-if (ENV !== "dev") {
-  options = {
-    key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
-    cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
-  };
-}
+// since this is coming from .env we probably don't need this : 
+// settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
-app.use(express.json());
+
+// This line should replace bodyparser along with others
+app.use(express.json({ limit: '50mb' }));
 
 // This probably should be checked to make sure we still want this
 // app.use(cors());
 
 app.set("trust proxy", true);
 const appSession = expressSession({
-  secret: "cdcfd1ad28c7455ba4d626ad50b9883b34f27502dfe22347f0b5fab2154a5754",
+  secret: SNAPIN_SESSION_SECRET || "",
   cookie: { secure: true, maxAge: 3600000 },
   saveUninitialized: false,
   resave: false,
@@ -56,6 +55,9 @@ const appSession = expressSession({
 //   })
 // );
 
+// Middleware to parse URL-encoded data with a size limit (This should replace body parser)
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 const blockedIps = [
   "192.168.1.1",
   "10.0.2.139",
@@ -65,8 +67,8 @@ const blockedIps = [
 ];
 
 app.use((req, res, next) => {
-  const ip = req.ip;
-  const address = req.socket.remoteAddress;
+  const ip: any = req.ip;
+  const address: any = req.socket.remoteAddress;
   if (blockedIps.includes(ip) || blockedIps.includes(address)) {
     console.log(`Ip blocked: ${ip} : ${address}`);
     res.status(403).send("Access denied - IP Blocked");
@@ -82,29 +84,31 @@ app.use((req, res, next) => {
 
 // Needs to be added in again when files are ready
 
-// app.use(appSession);
+app.use(appSession);
+
+// when implementing passport enable this  
 // app.use(passport.initialize());
 // app.use(passport.session(appSession));
 
 app.set("view engine", "ejs");
 
 // This doesn't seem to be called anywhere?
-const getClientAddress = function (req) {
-  return (
-    (req.headers["x-forwarded-for"] || "").split(",")[0] ||
-    req.connection.remoteAddress
-  );
-};
+// const getClientAddress = function (req: Request) {
+//   return (
+//     (req.headers.get("x-forwarded-for") || "").split(",")[0] ||
+//     req.connection.remoteAddress
+//   );
+// };
 
 // Check package and see if needed to be reinstalled
 
 // const multipartyMiddleware = multiparty();
 // app.use(multipartyMiddleware);
 
-app.get("/robots.txt", function (req, res) {
-  res.type("text/plain");
-  res.send("User-agent: *\nDisallow: /");
-});
+// app.get("/robots.txt", function (req, res) {
+//   res.type("text/plain");
+//   res.send("User-agent: *\nDisallow: /");
+// });
 
 // Check to make sure we need this
 
@@ -146,7 +150,8 @@ app.get("/", function (req, res) {
   res.render("auth/splash.ejs", { user: null });
 });
 app.get("/home", function (req, res) {
-  res.render("auth/splash.ejs", { user: req.user });
+  // ensure req.user exists, seems like on a request object in express it does not
+  res.render("auth/splash.ejs", { user: req?.user });
 });
 
 // app.get("/logout", function (req, res) {
@@ -199,10 +204,16 @@ app.use(function (req, res) {
 });
 
 if (ENV === "dev") {
+  // When running locally 
   app.listen(SNAPIN_WEBPORT, () => {
     console.log(`Example app listening on port ${SNAPIN_WEBPORT}`);
   });
 } else {
+  // When running on EC2
+  const options = {
+    key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
+    cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
+  };
   https.createServer(options, app).listen(settings.webPort, function () {
     console.log("Express server listening on port " + settings.webPort);
   });
