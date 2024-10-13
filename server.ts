@@ -6,7 +6,6 @@ import express from 'express'
 import expressSession from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
-// import middlewareFunction from './middleware/logMiddleware'
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
