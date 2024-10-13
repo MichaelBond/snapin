@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+</head>
+  <body>
+    <form id="DATAPAGE" action="https://api.smartweb-pro.com/v9api/webpostasp" method="post">
+      <input id="RESULTS" type="hidden" value=""<%=Results%>" />
+      <input id="SESSIONID" type="hidden" value=""<%=SessionID%>" />
+      <input id="USERID" type="hidden" value=""<%=UserID%>" />
+      <input id="APPID" type="hidden" value=""<%=AppID%>" />
+      <textarea id="POSTDATA" name="POSTDATA" rows="60" cols="4000"></textarea>
+      <script language="JavaScript1.2"  type="text/javascript">
+        var sp_Parent = (window.opener) ? window.opener : window.top;
+        s = parseInt(document.getElementById("SESSIONID").value, 10),
+        u = parseInt(document.getElementById("USERID").value, 10),
+        a = parseInt(document.getElementById("APPID").value, 10);
+        el = document.getElementById("POSTDATA");
+        if( sp_Parent && sp_Parent.GlobalHold && sp_Parent.GlobalHold.length>0 ) {
+          el.value=sp_Parent.GlobalHold;
+          sp_Parent.GlobalHold="";
+        }
+      </script>
+    </form>
+  </body>
+</html> 

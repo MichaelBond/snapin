@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+</head>
+  <body>
+    <form id="SMARTLOADER" action="#" method="post">
+      <input type="hidden" name="LoadArray" id="LoadArray" value =""<%=aProps%>"/>
+      <input type="hidden" name="LOADID" id="LOADID" value =""/>
+      <input type="hidden" name="MID" id="MID" value =""<%=UserID%>"/>
+      <input type="hidden" name="SID" id="SID" value =""<%=SessionID%>"/>
+      <input type="hidden" name="UID" id="UID" value =""<%=UniqueID%>"/>
+      <input type="hidden" name="DID" id="DID" value =""<%=DataID%>"/>
+      <input type="hidden" name="AID" id="AID" value =""<%=AppID%>"/>
+      <input type="hidden" name="PID" id="PID" value =""<%=PageID%>"/>
+      <input type="hidden" name="ID" id="ID" value =""<%=ObjectID%>"/>
+      <input type="hidden" name="ACTID" id="ACTID" value =""<%=ActID%>"/>
+      <input type="hidden" name="VID" id="VID" value =""<%=ValueID%>"/>
+      <input type="hidden" name="KID" id="KID" value =""<%=KeyID%>"/>
+      <script type="text/javascript">
+        var oPage,cSupport,cView,listArr,viewArr, nAct = 0;
+        var sp_Parent = (window.opener) ? window.opener : ((window.parent) ? window.parent : ((window.top) ? window.top : top.window));
+        var swb = sp_Parent.swb;
+
+        window.onerror = swb.reportHandler;
+        var _OBJECT = "object",
+          o = document.getElementById("ACTID"),
+          nAct = parseInt(o.value);
+        if ( nAct === 1 ) {
+          if (sp_Parent.acceptData ) { 
+            sp_Parent.acceptData(); 
+          }
+        }
+        if (nAct === 2 || nAct === 12 || nAct === 14 || nAct === 17) { 
+          if (sp_Parent.objectAlert) { 
+            sp_Parent.objectAlert(); 
+          } 
+        }
+        if (document.getElementById("LoadArray").value !== "[undefined]") {
+          if (sp_Parent.acceptData && (nAct === 4 || nAct === 5 || nAct === 6)) { 
+              sp_Parent.objectAlert(); 
+              sp_Parent.acceptData(); 
+          }
+          if ( sp_Parent.popWindow && nAct === 7 ) { 
+              sp_Parent.objectAlert();
+              sp_Parent.popWindow();
+          }
+          if ( sp_Parent.acceptOptions && nAct === 8 ) {
+              sp_Parent.objectAlert();
+              sp_Parent.acceptOptions();
+          }
+        }
+      </script>
+    </form>
+  </body>
+</html> 

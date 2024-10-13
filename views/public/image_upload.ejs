@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload</title>
+</head>
+<body>
+    <h1>Upload a Photo</h1>
+    <input type="file" accept="image/*" capture="camera" id="fileInput">
+    <button onclick="uploadPhoto()">Upload Photo</button>
+
+    <script>
+        function uploadPhoto() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append("BUCKET","snapin-backup-repo");
+                formData.append("PATH","gtm/uploads/");
+                formData.append('photo', file);
+
+                // Replace 'your_upload_endpoint' with your actual server endpoint
+                fetch('https://gtm.smartweb-pro.com/sys/s3/upload/secure', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Photo uploaded successfully!');
+                    } else {
+                        alert('Failed to upload photo.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while uploading the photo.');
+                });
+            } else {
+                alert('Please select a photo to upload.');
+            }
+        }
+    </script>
+</body>
+</html>
