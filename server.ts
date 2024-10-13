@@ -9,7 +9,6 @@ import stripeRouter from './routes/stripeRoute'
 // import middlewareFunction from './middleware/logMiddleware'
 
 // Probably should not have especially in prod 
-
 // const cors = require("cors");
 
 // Need to install
@@ -38,10 +37,6 @@ const app = express();
 
 app.use('/api/stripe', stripeRouter)
 
-// const stripe = express.Router();
-// app.use("/stripe", );
-
-// These 2 lines should replace bodyparser along with others
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -55,14 +50,6 @@ const appSession = expressSession({
   saveUninitialized: false,
   resave: false,
 });
-
-// check what this setting does and figure out new way to do this with out bodyparser
-
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: false,
-//   })
-// );
 
 
 const blockedIps = [
@@ -83,13 +70,6 @@ app.use((req, res, next) => {
     next();
   }
 });
-
-// check what this setting does and figure out new way to do this with out bodyparser
-
-// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-// app.use(bodyParser.json({ limit: "50mb" }));
-
-// Needs to be added in again when files are ready
 
 app.use(appSession);
 
