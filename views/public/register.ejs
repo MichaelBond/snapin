@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>GlobalTekMed:</title>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+ <link rel='stylesheet' id='roboto-subset.css-css'  href='https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5' type='text/css' media='all' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+  <style>
+    .cascading-right {
+      margin-right: -50px;
+    }
+    body {
+	background-color: 'cccccc';
+    }
+    .cb-img {
+	max-height: 12em;
+	max-width: 18em;
+    }
+    @media (max-width: 991.98px) {
+      .cascading-right {
+        margin-right: 0;
+      }
+    }
+  </style>
+
+  <!-- Jumbotron -->
+  <div class="container py-4">
+    <div class="row g-0 align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card cascading-right" style="
+            background: hsla(0, 0%, 100%, 0.55);
+            backdrop-filter: blur(30px);
+            ">
+          <div class="card-body p-5 shadow-5 text-center">
+	          <img class='cb-img' src="/sites/svg/gtmlogo/GTM_Registration">
+            <h2 class="fw-bold mb-5">Employee Register</h2>
+            <form class='md-form' method="POST" action="/auth/register">
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="first_name" name="first_name" class="form-control" />
+                    <label class="form-label" for="first_name">First name</label>
+                    <div class="form-notch">
+                      <div class="form-notch-leading" style="width: 9px;"></div>
+                      <div class="form-notch-middle" style="width: 68.8px;"></div>
+                      <div class="form-notch-trailing"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="last_name" name="last_name" class="form-control" />
+                    <label class="form-label" for="last_name">Last name</label>
+ 		                <div class="form-notch">
+                      <div class="form-notch-leading" style="width: 9px;"></div>
+                      <div class="form-notch-middle" style="width: 68.8px;"></div>
+                      <div class="form-notch-trailing"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input type="email" id="signup_email" name="signup_email" class="form-control active" autocomplete="off" />
+                <label class="form-label" for="signup_email">Email address</label>
+ 		            <div class="form-notch">
+                  <div class="form-notch-leading" style="width: 9px;"></div>
+                  <div class="form-notch-middle" style="width: 68.8px;"></div>
+                  <div class="form-notch-trailing"></div>
+        		    </div>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <input type="password" id="signup_password" name="signup_password"class="form-control active" autocomplete="off" />
+                <label class="form-label" for="signup_password">Password</label>
+ 		            <div class="form-notch">
+                  <div class="form-notch-leading" style="width: 9px;"></div>
+                  <div class="form-notch-middle" style="width: 68.8px;"></div>
+                  <div class="form-notch-trailing"></div>
+        		    </div>
+              </div>
+
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-center mb-4">
+                <input class="form-check-input me-2" type="checkbox" value="" id="phone_setup" name="phone_setup"/>
+                <label class="form-check-label" for="phone_setup">
+                  Check if you need to set up your mobile phone?
+                </label>
+              </div>
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">
+                Register
+              </button>
+
+              <!-- Register buttons -->
+              <div class="text-center">
+                <p>Use your Active Directory email address:</p>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-facebook-f"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-google"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-twitter"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-github"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4"
+          alt="" />
+      </div>
+    </div>
+  </div>
+  <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->
+<script>
+const inputElements = document.getElementsByClassName('form-control');
+for(item of inputElements) {
+	item.addEventListener('input', function() {
+	    if(this.value) {
+        	this.classList.add('active');
+	    } else {
+        	this.classList.remove('active');
+	    }
+	})
+}
+</script>
+</body>
+</html>

