@@ -1,11 +1,10 @@
-import dotenv from 'dotenv';
-dotenv.config()
 import fs from 'fs'
 import https from 'https'
 import express from 'express'
 import expressSession from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
+import configs from './configs/config'
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -22,7 +21,8 @@ import stripeRouter from './routes/stripeRoute'
 // var httpMsgs = require("./app/httpmsgs");
 // require("./config/passport")(passport);
 // require("./routes/stripe.js")(stripe, passport);
-const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = process.env;
+
+const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 
 // do we need this? 
 // const arguments = process.argv.splice(2);

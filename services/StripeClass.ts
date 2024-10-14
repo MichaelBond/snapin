@@ -48,6 +48,7 @@ type Currency =
   | "VEF"  // Venezuelan Bolívar
   | "VND"  // Vietnamese Dong
   | "ZAR";  // South African Rand
+
 type Product = {
   name: string
 }
@@ -72,7 +73,6 @@ export default class StripeServiceClass {
 
   constructor(stripeApiKey: string) {
     this.apiKey = stripeApiKey
-    // this.pubKey = env['STRIPE_PUB_KEY']
     this.stripe = new Stripe(this.apiKey)
   }
 
