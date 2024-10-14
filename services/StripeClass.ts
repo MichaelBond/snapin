@@ -1,4 +1,6 @@
 import Stripe from "stripe"
+import logger from '../utils/logger'
+
 
 export enum StripeErrorType {
   APIConnectionError = "api_connection_error",
@@ -54,13 +56,6 @@ type Product = {
 }
 type Plan = {
   plan: any
-}
-
-class StripeError extends Error {
-  constructor(params: { message: string }) {
-    super();
-    this.message = params.message
-  }
 }
 
 export default class StripeServiceClass {
@@ -227,7 +222,6 @@ export default class StripeServiceClass {
 
   // this needs to be be turned into 2 functions, and the controller needs to be this so leaving in place for now 
   // createPricedProduct() {
-  //   console.log("createPricedProduct");
   //   const ProdParameters = {
   //     name: req.body.name,
   //     type: req.body.type,
@@ -365,7 +359,6 @@ export default class StripeServiceClass {
   // }
 
   //   processEvents () {
-  //     console.log("processEvents");
   //     const signed = req.headers["stripe-signature"];
   //     const parts = signed.split(",");
   //     let tStamp = null;
@@ -392,15 +385,12 @@ export default class StripeServiceClass {
   //       switch (hookEvent.type) {
   //         case "payment_intent.succeeded":
   //           const paymentIntent = hookEvent.data.object;
-  //           console.log("PaymentIntent was successful!");
   //           break;
   //         case "payment_method.attached":
   //           const paymentMethod = hookEvent.data.object;
-  //           console.log("PaymentMethod was attached to a Customer!");
   //           break;
   //         // ... handle other event types
   //         default:
-  //           console.log(`Unhandled event type ${hookEvent.type}`);
   //       }
 
   //       // Return a response to acknowledge receipt of the event
@@ -411,9 +401,23 @@ export default class StripeServiceClass {
   //     }
   //   }
 
+  // this needs to be added here still
+  //   createWebhook (endpoint, events) {
+  //     const url = `${endpoint}`;
+  //     try {
+  //       const endpoint = await this.stripe.webhookEndpoints.create({
+  //         url: url,
+  //         enabled_events: this.ENABLED_EVENTS,
+  //       });
+  //       return { err: null, data: endpoint };
+  //     } catch (error) {
+  // throw this.errorHandler(error)
+  //     }
+  //   }
+
   private errorHandler(error: any) {
-    const errorType = error.type as StripeErrorType;
-    const status: number = error.code  // log error type, status code, service
+    const errorType = error?.type as StripeErrorType;
+    logger.error({ className: StripeServiceClass.name, status: error?.code, type: errorType, message: error?.message })
 
     let message: string
     switch (errorType) {
@@ -439,50 +443,3 @@ export default class StripeServiceClass {
     return { message }
   }
 }
-
-// new StripeServiceClass("pk_test_N93rD2WkRxHsvEWWySb7redc")
-
-// const SDK = {
-//   endpointSecret: auth.stripe.endpointSecret,
-//   TEMPLATES: {
-//     dummyCharge: {
-//       amount: 2000,
-//       currency: "usd",
-//       source: "tok_mastercard",
-//       description: "My first payment",
-//     }
-//   }
-//   ENABLED_EVENTS: [
-//     "payment_intent.payment_failed",
-//     "payment_intent.succeeded",
-//     "payment_method.attached",
-//   ],
-//   errorHandling: function (err) {
-//     const snapErr = "snapInError";
-//     switch (err.type) {
-//       case "StripeCardError":
-//         err[snapErr] = this.MESSAGES[err.type];
-//         err.message; // => e.g. "Your card's expiration year is invalid."
-//         break;
-//       case "RateLimitError":
-//       case "StripeInvalidRequestError":
-//       case "StripeAPIError":
-//       case "StripeConnectionError":
-//       case "StripeAuthenticationError":
-//         err[snapErr] = this.MESSAGES[err.type];
-//         break;
-//       default:
-//         err[snapErr] = this.MESSAGES.DefaultError;
-//         break;
-//     }
-//     return err;
-//   }
-
-
-
-
-
-// };
-// module.exports = {
-//   SDK,
-// };

@@ -1,5 +1,9 @@
 import * as stripeController from '../controllers/stripeController'
 import { StripeEvents } from '../models/stripeModels'
+import logger from '../utils/logger'
+
+// This file will have all controllers feeding into it
+// All routes will call a function in here abstracting 
 
 export const stripeGetBalance: any = async () => {
     return await stripeController.getBalance()
@@ -10,25 +14,23 @@ export const stripeWebhook: any = async (event: any) => {
     switch (event.type) {
         case StripeEvents.PAYMENT_INTENT_SUCCESS: {
             const paymentIntent = event.data.object;
-            // logger.info("payment intent: ", paymentIntent)
+            logger.info("payment intent: ", paymentIntent)
             break;
 
         }
         case StripeEvents.PAYMENT_INTENT_ATTACHED: {
             const paymentMethod = event.data.object;
-            // logger.info("payment method: ", paymentMethod)
+            logger.info("payment method: ", paymentMethod)
             break;
 
         }
         case StripeEvents.CHARGE_SUCCESSFUL: {
             const charge = event.data.object;
-            // logger.info("charge: ", charge)
+            logger.info("charge: ", charge)
             break;
 
         }
         default:
-            console.log('remove this when logger is done')
-        // logger.info(`Unhandled event type ${event.type}`);
+            logger.info(`Unhandled event type ${event.type}`);
     }
-
 }

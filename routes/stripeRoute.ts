@@ -1,39 +1,25 @@
 import express from "express"
 const stripeRouter = express.Router();
 import * as handler from '../handlers/snapInHandler'
+import logger from "../utils/logger";
 
 stripeRouter.get('/balance', async (req, res) => {
     try {
         const balance = await handler.stripeGetBalance()
-        res.send(balance)
+        res.status(200).send(balance)
     }
     catch (err) {
         res.status(500).send(err)
     }
 })
-
-// This just needs to be a route in StripeRoutes
-//   createWebhook (endpoint, events) {
-//     console.log("createWebhook");
-//     const url = `${endpoint}`;
-//     try {
-//       const endpoint = await this.stripe.webhookEndpoints.create({
-//         url: url,
-//         enabled_events: this.ENABLED_EVENTS,
-//       });
-//       return { err: null, data: endpoint };
-//     } catch (error) {
-// throw this.errorHandler(error)
-//     }
-//   }
-stripeRouter.post('/webhook', async (req, res) => {
-    try {
-
-    } catch (err) {
-
-    }
-
-})
+    .post('/webhook', async (req, res) => {
+        try {
+            await handler.stripeWebhook(req.body)
+        } catch (err) {
+            logger.error(err)
+        }
+        res.status(200).send({ received: true })
+    })
 
 export default stripeRouter;
 
