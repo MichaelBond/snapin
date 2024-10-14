@@ -12,18 +12,23 @@
   "author": "Michael E Bond",
   "license": "ISC",
   "dependencies": {
+    "cls-hooked": "^4.2.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
-    "stripe": "^17.2.0"
+    "stripe": "^17.2.0",
+    "uuid": "^10.0.0",
+    "winston": "^3.15.0"
   },
   "devDependencies": {
+    "@types/cls-hooked": "^4.3.8",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.0",
     "@types/node": "^22.7.5",
+    "@types/uuid": "^10.0.0",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.3"
   }

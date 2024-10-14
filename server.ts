@@ -5,12 +5,14 @@ import expressSession from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
 import configs from './configs/config'
+import logger from './utils/logger'
+import { requestIdMiddleware } from './middleware/requestIdMiddleware'
+import requestLoggingMiddleware from './middleware/requestLoggingMiddleware';
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
 
 // Need to install
-
 // const passport = require("passport");
 // const flash = require("connect-flash");
 // const morgan = require("morgan");
@@ -20,7 +22,6 @@ import configs from './configs/config'
 
 // var httpMsgs = require("./app/httpmsgs");
 // require("./config/passport")(passport);
-// require("./routes/stripe.js")(stripe, passport);
 
 const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 
@@ -28,7 +29,8 @@ const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 // const arguments = process.argv.splice(2);
 
 const app = express();
-
+app.use(requestIdMiddleware)
+app.use(requestLoggingMiddleware)
 
 app.use('/api/stripe', stripeRouter)
 
@@ -59,7 +61,7 @@ app.use((req, res, next) => {
   const ip: any = req.ip;
   const address: any = req.socket.remoteAddress;
   if (blockedIps.includes(ip) || blockedIps.includes(address)) {
-    console.log(`Ip blocked: ${ip} : ${address}`);
+    logger.info(`Ip blocked: ${ip} : ${address}`);
     res.status(403).send("Access denied - IP Blocked");
   } else {
     next();
@@ -140,7 +142,7 @@ app.get("/disclaimer", function (req, res) {
 
 // app.get("/", (req, res, next) => {
 //   const hostname = req.hostname;
-//   console.log(hostname);
+//   logger.info(hostname);
 //   if (req.hostname === "www.quantrex.com") {
 //     const endpoint = `${req.protocol}://gtm.smartweb-pro.com/sites/opensite/-141`;
 //     return res.redirect(endpoint);
@@ -177,7 +179,7 @@ app.get("/home", function (req, res) {
 
 app.use((req, res, next) => {
   // If no previous route/method matched, we end up here (404 Not Found)
-  console.log(`Route Invalid: ${req.socket.remoteAddress}, ${req.ip}`);
+  logger.info(`Route Invalid: ${req.socket.remoteAddress}, ${req.ip}`);
   if (req.accepts("html")) {
     res
       .status(404)
@@ -201,14 +203,14 @@ app.use((req, res, next) => {
 // WE Should look into a dedicated logger for logs, set different levels of logging
 // Look into Winston.js
 app.use(function (req, res) {
-  console.log(req.socket.remoteAddress);
+  logger.info(req.socket.remoteAddress);
 });
 
 if (ENV === "dev") {
   // When running locally 
   app.listen(SNAPIN_WEBPORT, () => {
     // This is fine, it's only locally, but could be ran in logger as well
-    console.log(`Example app listening on port ${SNAPIN_WEBPORT}`);
+    logger.info(`Example app listening on port ${SNAPIN_WEBPORT}`);
   });
 } else {
   // When running on EC2
@@ -218,6 +220,6 @@ if (ENV === "dev") {
   };
   https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
     // We should be doig a logger 
-    console.log("Express server listening on port " + SNAPIN_WEBPORT);
+    logger.info("Express server listening on port " + SNAPIN_WEBPORT);
   });
 }
