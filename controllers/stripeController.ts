@@ -6,3 +6,4 @@ const stripeService = new StripeServiceClass(STRIPE_API_KEY)
 export const getBalance = async () => {
     return await stripeService.getBalance()
 }
+

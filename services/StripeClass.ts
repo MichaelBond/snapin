@@ -57,12 +57,8 @@ type Plan = {
 }
 
 class StripeError extends Error {
-  public status: number;
-  public type: string;
-  constructor(params: { message: string, status: number, type: string }) {
+  constructor(params: { message: string }) {
     super();
-    this.status = params.status;
-    this.type = params.type;
     this.message = params.message
   }
 }
@@ -85,13 +81,12 @@ export default class StripeServiceClass {
     }
   }
   async getBalance() {
-    // try {
-    //   const balance = await this.stripe.balance.retrieve();
-    //   return { err: null, data: balance };
-    // } catch (error) {
-    const error = {code: 400, type: StripeErrorType.APIConnectionError}
+    try {
+      const balance = await this.stripe.balance.retrieve();
+      return { err: null, data: balance };
+    } catch (error) {
       throw this.errorHandler(error)
-    // }
+    }
   }
   async getBalanceHistoryById(id: string) {
     try {
@@ -416,23 +411,10 @@ export default class StripeServiceClass {
   //     }
   //   }
 
-  // This just needs to be a route in StripeRoutes
-  //   createWebhook (endpoint, events) {
-  //     console.log("createWebhook");
-  //     const url = `${endpoint}`;
-  //     try {
-  //       const endpoint = await this.stripe.webhookEndpoints.create({
-  //         url: url,
-  //         enabled_events: this.ENABLED_EVENTS,
-  //       });
-  //       return { err: null, data: endpoint };
-  //     } catch (error) {
-  // throw this.errorHandler(error)
-  //     }
-  //   }
   private errorHandler(error: any) {
     const errorType = error.type as StripeErrorType;
     const status: number = error.code  // log error type, status code, service
+
     let message: string
     switch (errorType) {
       case StripeErrorType.APIConnectionError:
@@ -454,11 +436,7 @@ export default class StripeServiceClass {
       default:
         message = "An unknown error occurred. Please contact support.";
     }
-    return new StripeError({
-      message,
-      type: errorType,
-      status
-    })    // just return the error message
+    return { message }
   }
 }
 
