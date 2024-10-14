@@ -1,13 +1,12 @@
-import dotenv from 'dotenv';
-dotenv.config()
 import fs from 'fs'
 import https from 'https'
 import express from 'express'
 import expressSession from "express-session";
 import cookieParser from 'cookie-parser'
+import stripeRouter from './routes/stripeRoute'
+import configs from './configs/config'
 
 // Probably should not have especially in prod 
-
 // const cors = require("cors");
 
 // Need to install
@@ -18,22 +17,21 @@ import cookieParser from 'cookie-parser'
 // const multiparty = require("connect-multiparty");
 
 // Other files that are not yet included
+
 // var httpMsgs = require("./app/httpmsgs");
 // require("./config/passport")(passport);
 // require("./routes/stripe.js")(stripe, passport);
-const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = process.env;
+
+const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 
 // do we need this? 
 // const arguments = process.argv.splice(2);
 
-var settings = {
-  webPort: SNAPIN_WEBPORT,
-};
-// since this is coming from .env we probably don't need this : 
-// settings.webPort = arguments[0] ? arguments[0] : settings.webPort;
 const app = express();
 
-// These 2 lines should replace bodyparser along with others
+
+app.use('/api/stripe', stripeRouter)
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -47,14 +45,6 @@ const appSession = expressSession({
   saveUninitialized: false,
   resave: false,
 });
-
-// check what this setting does and figure out new way to do this with out bodyparser
-
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: false,
-//   })
-// );
 
 
 const blockedIps = [
@@ -75,13 +65,6 @@ app.use((req, res, next) => {
     next();
   }
 });
-
-// check what this setting does and figure out new way to do this with out bodyparser
-
-// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-// app.use(bodyParser.json({ limit: "50mb" }));
-
-// Needs to be added in again when files are ready
 
 app.use(appSession);
 
@@ -115,7 +98,7 @@ app.set("view engine", "ejs");
 // app.use("/secure", express.static(`${__dirname}/sites`));
 // app.use("/secure/sites", express.static(`${__dirname}/sites`));
 // app.use("/secure/smartwebpro9", express.static(`${__dirname}/sites`));
-//app.use("/stripe", express.static(`${__dirname}/stripe`));
+// app.use("/stripe", express.static(`${__dirname}/stripe`));
 
 // check if we need this
 
@@ -170,8 +153,7 @@ app.get("/home", function (req, res) {
 
 // PROTECTED ROUTES
 
-// const stripe = express.Router();
-// app.use("/stripe", stripe);
+
 
 app.use((req, res, next) => {
   // If no previous route/method matched, we end up here (404 Not Found)
@@ -214,8 +196,8 @@ if (ENV === "dev") {
     key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
     cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
   };
-  https.createServer(options, app).listen(settings.webPort, function () {
+  https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
     // We should be doig a logger 
-    console.log("Express server listening on port " + settings.webPort);
+    console.log("Express server listening on port " + SNAPIN_WEBPORT);
   });
 }

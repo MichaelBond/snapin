@@ -6,6 +6,7 @@
 ENV=
 SNAPIN_WEBPORT=
 SNAPIN_SESSION_SECRET=
+STRIPE_API_KEY=
 ```
 
 ## Run App Locally 
