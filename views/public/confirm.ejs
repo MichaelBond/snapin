@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+	<title>Node Authentication</title>
+  <link type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" ></link>
+  <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" ></link>
+	<style>
+		body 		{ padding-top:80px; }
+</style>
+</head>
+<body>
+<div class="container">
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 626.21 211.15">
+  <defs>
+    <style>
+        @font-face {font-family: "Lato"; src: url("https://fonts.gstatic.com/s/lato/v21/S6uyw4BMUTPHjxAwWw.ttf") format("truetype");}
+        .cls-1 {
+            fill: url(#linear-gradient-2);
+        }
+
+        .cls-1, .cls-2, .cls-3, .cls-4 {
+            isolation: isolate;
+        }
+
+        .cls-2 {
+            fill: url(#linear-gradient-3);
+        }
+
+        .cls-3 {
+            fill: url(#linear-gradient);
+        }
+
+        .cls-5 {
+            fill: #138ec7;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .cls-4 {
+            fill: #010101;
+        }
+
+        .cls-6 {
+            fill: #231f20;
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
+    <linearGradient id="linear-gradient" x1="97.45" y1="76.6" x2="179.49" y2="76.6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b94d2"/>
+      <stop offset="1" stop-color="#091f40"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="82.1" y1="80" x2="185.98" y2="80" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="154.88" y1="83.39" x2="178.9" y2="83.39" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1" text-anchor="middle">
+    <g transform="translate(150, 0)">
+      <path class="cls-3" d="M120.26,64.37c17.77-34.07,43.37-55.47,59.22-50.36-1.02-1.13-2.16-2.1-3.43-2.86-15.43-9.31-43.32,12.62-62.28,48.97-18.96,36.36-21.82,73.38-6.39,82.69,.97,.59,1.99,1.05,3.06,1.39-11.41-12.55-7.59-46.46,9.82-79.83Z"/>
+      <path class="cls-1" d="M158.77,111.84c-23.24,0-23.6-.05-28.38-.69-7.59-1.21-11.38-5.17-11.38-11.9,0-5.69,1.55-14.49,5.69-31.21,2.93-11.21,6.04-15.87,12.24-17.76q5.35-1.55,23.28-1.55l12.93-.17,11.87,.17c1.58-10.72,1.21-20.1-1.21-27.06-2.18,0-4.47,0-6.87,0-30.01,0-43.46,.86-53.29,3.28-19.14,4.83-27.76,16.04-34.49,44.84-5,21.04-7.07,32.94-7.07,40.35,0,10.86,3.45,18.45,10.17,22.25,8.09,4.49,15.15,5.73,40.94,5.98,8.47-5.69,17.38-14.83,25.56-26.5Z"/>
+      <path class="cls-2" d="M154.88,94.08h14.66c.04-.08,.09-.16,.13-.25,3.7-7.09,6.78-14.21,9.23-21.14h-19.37l-4.66,21.38Z"/>
+      <g>
+        <path class="cls-4" d="M177.23,94.08h21.97c-2.36,15.48-6.86,18.15-32.39,17.79-7.35,10.89-15.45,19.91-23.58,26.52,.99,0,1.99,0,3.03,0,21.38,0,40.01,0,43.98-.17,18.62-.52,30.87-7.76,36.73-21.9,3.1-7.59,4.14-11.21,7.59-27.76l3.45-15.87h-51.77c-2.38,7.04-5.39,14.23-9,21.38Z"/>
+        <path class="cls-4" d="M234.38,27.86c-7.64-4.79-13.72-5.94-42.64-6.16,1.67,7.68,1.77,16.92,.33,27.04,6.86,.04,7.56,.24,9.89,1.2,3.28,1.38,4.83,3.97,4.66,7.24,0,1.21-.35,2.76-.52,4.31h34.32c1.55-7.24,2.24-11.9,2.24-16.21,0-8.28-2.76-14.14-8.28-17.42Z"/>
+      </g>
+      <path class="cls-4" d="M186.04,3.4C182.06,1,177.57-.09,172.79,0c2.51,.42,4.88,1.26,7.07,2.58,18.95,11.43,17.33,53.25-3.61,93.41-20.94,40.16-53.28,63.45-72.23,52.02-.01,0-.02-.01-.03-.02,1.43,1.44,2.98,2.7,4.7,3.74,20.78,12.53,54.94-10.51,76.3-51.47,21.36-40.96,21.84-84.32,1.06-96.86Z"/>
+    </g>
+    <g>
+        <text x="50%" y="95%" text-anchor="middle" dominant-baseline="bottom" font-family="Lato" font-size="48px"><tspan class="cls-6"><%= message.prefix %></tspan> 
+        <tspan class="cls-5"><%= message.text %></tspan></text>        
+    </g>      
+  </g>
+</svg>
+<div style='top: 50%; left: 50%; position: absolute; width: 35em; height: 35em; font-size: 1em; transform: translate(-50%, -50% )'>
+You must have DUO Mobile Application installed on your mobile phone before registering MFA
+<div>
+<input type='button' onclick='window.close();' style='top: 50%; left: 50%; position: absolute; width: 15em; height: 1.5em; font-size: 1em; transform: translate(-50%, -50% )' value = 'Return To Welcome'</>
+<input type='button' onclick='window.parent.location.href='/home' style='top: 50%; left: 50%; position: absolute; width: 15em; height: 1.5em; font-size: 1em; transform: translate(-50%, -50% )' value = 'Continue To Register MFA'</>
+</div>
+</div>
+
+</div>
+</body>
+<script>
+   window.parent.location.href = "secured/smartweb9/start/root/";
+</script>
+
+</html>

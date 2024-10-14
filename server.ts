@@ -115,7 +115,27 @@ app.get("/healthcheck", (req, res) => {
   res.write("loaderio-f77de18d9ec250150dd814d3933b2026");
   res.end();
 });
-
+app.get("/security", function (req, res) {
+  res.render("public/dodsecurity.ejs", { user: req.user });
+});
+app.get("/privacy", function (req, res) {
+  res.render("public/privacy.ejs", { user: req.user });
+});
+app.get("/cookies", function (req, res) {
+  res.render("public/cookies.ejs", { user: req.user });
+});
+app.get("/refunds", function (req, res) {
+  res.render("public/refunds.ejs", { user: req.user });
+});
+app.get("/tandc", function (req, res) {
+  res.render("public/tandc.ejs", { user: req.user });
+});
+app.get("/license", function (req, res) {
+  res.render("public/license.ejs", { user: req.user });
+});
+app.get("/disclaimer", function (req, res) {
+  res.render("public/disclaimer.ejs", { user: req.user });
+});
 // This may need to be conditional based on if not dev?
 
 // app.get("/", (req, res, next) => {

@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+	<title>SmartWeb Pro 10</title>
+	<meta name="google-site-verification" content="TBxDl0uFKRNqcrRoYwD1vvCZgt0rRjv4Hd71w_jeVc8" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<style>
+    body 		{ padding-top:0px; text-align: center; }
+    .smartweb-container { overflow: hidden; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgb(255, 255, 255); }
+
+    v:shape { display: inline-block; }
+    .btn { height: auto; left: 0px; position: relative; top: 0px; width: auto; padding: 10px; margin-right: 10px; -webkit-border-radius: 8px; text-decoration: none; font-size: 12pt; color: #ffffff; background: linear-gradient(#393939,#09c09c,#009c9c,#009c9c,#393939); font-family: arial; -webkit-box-shadow: 2px 2px 1px #808080; }
+
+    .SmartWebWindow { overflow: hidden; border-radius: 10px; box-shadow: rgba(128, 128, 128, 0.498039) 5px 5px 5px 0px; border: 6px solid rgba(220, 220, 220, 0.14902); text-align: center; font-family: tahoma; font-size: 11pt; color: rgb(0, 0, 0); position: relative; background-color: rgb(225, 219, 210); }
+
+    .SmartWebWindowTitle { top: 1px; width: 80%; border-width: 1px; text-align: justify; font-size: 1em; font-weight: bold; float: left; height: 80%; left: 6px; position: relative; }
+
+    .SmartWebWindowFooter { text-align: center; font-size: 0.5em; font-style: italic; height: 100%; left: 0px; top: 0px; width: 85%; overflow: hidden; position: relative; }
+
+    .SmartWebDataTextBox { border-style: none; text-align: left; font-family: arial, helvetica; font-size: 12.5pt; color: rgb(0, 0, 0); overflow: hidden; position: relative; background-color: white; }
+
+    .smartwindow-controls > .controls { color: rgb(0, 0, 0); max-width: 15px; min-width: 15px; max-height: 16px; min-height: 16px; border-radius: 3px; right: 0px; margin: 1px 1px 2px; padding: 0px 1px; border: 1.33333px outset rgb(192, 192, 192); text-align: center; vertical-align: middle; font-family: verdana; font-size: 0.5em; font-weight: normal; float: right; height: 11px; left: 0px; position: relative; top: 0px; width: 10px; background-color: rgb(228, 228, 228); background-position: 1px 1px; background-repeat: no-repeat; }
+
+    .smartwindow-controls > .controls:hover { max-width: 15px; min-width: 15px; max-height: 16px; min-height: 16px; border-radius: 3px; right: 0px; border: 1.33333px outset rgb(192, 192, 192); text-align: center; vertical-align: middle; float: right; height: 10px; left: 0px; position: relative; top: 0px; width: 10px; background-color: rgb(255, 0, 0); }
+
+    .smartweb-page-container { padding: 0; margin: 0; min-height: 600px; border-radius: 10px; height: auto; left: 0px; position: relative; top: 0px; width: 90%; background-color: rgb(10, 10, 10); }
+
+    .smartweb-page-header { padding: 0; margin: 0; min-height: 100px; height: auto; left: 0px; position: relative; top: 0px; width: 100%; background-color: rgb(57, 57, 57); }
+
+    .smartweb-page-menu { padding: 0; margin: 0; min-height: 30px; height: auto; left: 0px; position: relative; top: 0px; width: 100%; background-color: rgb(137, 137, 137); }
+
+    .smartweb-page-body { padding: 0; margin: 0; min-height: 500px; height: auto; left: 0px; position: relative; top: 0px; width: 100%; background-color: rgb(173, 173, 173); }
+
+    .smartweb-page-footer { padding: 0; margin: 0; min-height: 100px; -webkit-column-count: 4; text-align: left; font-size: .75em; height: auto; left: 0px; position: relative; top: 0px; width: 100%; background-color: rgb(57, 57, 57); }
+
+    .smartweb-page-footer > a { background-color: transparent; color: rgb(255, 255, 255); text-decoration: none; font-family: 'lucida sans unicode'; left: 0px; top: 0px; padding-left: 10px
+    }
+    .smartweb-footer-link:hover {font-weight: bold; }
+  </style>
+</head>
+<body width="100%" style="text-align:center;" align ="center">
+  <div id="WEBDIV_16" name="WEBDIV_16"  style="-webkit-border-radius: 15px; " class="smartweb-page-container" >
+    <div id="WEBDIV_19" name="WEBDIV_19" style="color:white;" class="smartweb-page-header" >
+      <img  style="height:90%; position: absolute;left: 50px;" src="SW0/img/icon_smartwebpro.svg"></img>
+      <% if (user !== null ) { %>
+        <strong>Welcome: </strong><%= user.data.local.username %>
+        <a href="/logout" class="btn btn-default">Logout</a>
+      <% } else { %>
+         <a href="/auth/login" class="btn btn-default">Login</a>
+      <% } %>
+
+    </div>
+    <div id="WEBDIV_21" name="WEBDIV_21" class="smartweb-page-menu" ></div>
+    <div id="WEBDIV_23" name="WEBDIV_23"  style="-webkit-border-radius: 10px; " class="smartweb-page-body" >
+      <h1>
+        <span class="fa fa-lock"></span> SmartWeb Pro 10
+      </h1>
+      <h4>
+        Project Development System for Professionals
+      </h4>
+      <p style="font-size: 36pt;">This Page is under development and will be available once it is ready.</p>
+    </div>
+    <div id="WEBDIV_25" name="WEBDIV_25" class="smartweb-page-footer" >
+      <a href="auth/login" class="smartweb-footer-link">
+        Company Information
+      </a>
+      <br />
+        <a href="auth/login" class="smartweb-footer-link">
+          Documentation
+        </a>
+        <br />
+          <a href="auth/login" class="smartweb-footer-link">
+            Subscription Plans
+          </a>
+          <br />
+            <a href="secure/profile" class="smartweb-footer-link">
+              API Access
+            </a>
+            <br />
+              <a href="auth/login" class="smartweb-footer-link">
+                Pricing
+              </a>
+              <br />
+                <a href="auth/login" class="smartweb-footer-link">
+                  Account Login
+                </a>
+                <br />
+                  <a href="logout" class="smartweb-footer-link">
+                    Logout
+                  </a>
+                  <br />
+                    <a href="secure/smartwebpro9" class="smartweb-footer-link">
+                      Application Demo
+                    </a>
+                    <br />
+                      <a href="auth/login" class="smartweb-footer-link">
+                        Project Demo
+                      </a>
+                      <br />
+                        <a href="auth/login" class="smartweb-footer-link">
+                          Graphics Demo
+                        </a>
+                        <br />
+                          <a href="auth/login" class="smartweb-footer-link">
+                            Game Demo
+                          </a>
+                          <br />
+                            <a href="auth/login" class="smartweb-footer-link">
+                              Application Demo
+                            </a>
+                            <br />
+                              <a href="auth/login" class="smartweb-footer-link">
+                                Advertising Demo
+                              </a>
+                              <br />
+      </div>
+  </div>
+</body>
+</html>
