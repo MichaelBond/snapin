@@ -85,12 +85,13 @@ export default class StripeServiceClass {
     }
   }
   async getBalance() {
-    try {
-      const balance = await this.stripe.balance.retrieve();
-      return { err: null, data: balance };
-    } catch (error) {
+    // try {
+    //   const balance = await this.stripe.balance.retrieve();
+    //   return { err: null, data: balance };
+    // } catch (error) {
+    const error = {code: 400, type: StripeErrorType.APIConnectionError}
       throw this.errorHandler(error)
-    }
+    // }
   }
   async getBalanceHistoryById(id: string) {
     try {
@@ -431,8 +432,8 @@ export default class StripeServiceClass {
   //   }
   private errorHandler(error: any) {
     const errorType = error.type as StripeErrorType;
+    const status: number = error.code  // log error type, status code, service
     let message: string
-    const status: number = error.code
     switch (errorType) {
       case StripeErrorType.APIConnectionError:
         message = "Network communication with Stripe failed. Please try again later.";
@@ -457,7 +458,7 @@ export default class StripeServiceClass {
       message,
       type: errorType,
       status
-    })
+    })    // just return the error message
   }
 }
 
