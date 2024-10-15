@@ -14,6 +14,7 @@ export default class MSSQLService {
     this.isReady = false
     this.pool = null
     this.options = config.MSSQL_QUANTREX
+    this.createPool();
   }
   async createPool() {
     try {
