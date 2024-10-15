@@ -41,7 +41,7 @@ export default class MYSQLService {
     return parameters;
   }
 
-  async execProcedure(procedureCall: string, params: any) {
+  async execProcedure(procedureCall: string, params?: any) {
     const pool = this.pool;
 
     logger.debug("MYSQL:Procedure", procedureCall, params);
@@ -101,7 +101,7 @@ export default class MYSQLService {
     }
   }
 
-  async execQuery(query: string, parameters: any) {
+  async execQuery(query: string, parameters?: any) {
     /*
       query format 'select top 1 * from swpro.dbo.swAuthTable where username = @username'
       params format { "username": { "type": "NVarChar", "size": 255, "value": "mike@quantrex.com"}}
@@ -114,7 +114,8 @@ export default class MYSQLService {
     if (query.substring(0, 4) !== "CALL") {
       logger.debug("MYSQL:Query", query, parameters);
     }
-    if (parameters && parameters.length > 0) {
+    console.log("Parameters:", parameters)
+    if (parameters) {
       const paramsJson =
         typeof parameters === "string" ? JSON.parse(parameters) : parameters;
       //console.log(paramsJson);
@@ -126,9 +127,9 @@ export default class MYSQLService {
         let item = params[key];
        // console.log("MYSQL VARIABLES: ", typeof item, item);
         if (typeof item === "string") {
-          query = query.replace("?", `'${item}'`);
+          query = query.replace(`?${key}`, `'${item}'`);
         } else {
-          query = query.replace("?", `${item}`);
+          query = query.replace(`?${key}`, `${item}`);
         }
       }
      // console.log("MYSQL PARAMETERS: ", params, query);

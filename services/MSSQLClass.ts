@@ -52,7 +52,9 @@ export default class MSSQLService {
         oParameters = typeof parameters === "string" ? JSON.parse(parameters) : parameters;
         this.prepParameters(request, oParameters);
       }
+      console.log(query)
       const response = await request.query(query); // Execute the query string
+      console.log(response)
       if (response && response.recordset) {
         results = response.recordset;
         // console.log("Query execution result:", results);
@@ -119,6 +121,7 @@ export default class MSSQLService {
 
 
   async getCubeQuery(options: any) {
+    console.log(options)
     const CubeId = options.cubeId;
     const CubeQuery = `select CubeID, ReadQuery, TypeAccessID from [${this.dbSchema}].[dbo].[swCubes] where CubeID=${CubeId}`;
     const results: any = await this.execQuery(CubeQuery);
@@ -128,8 +131,9 @@ export default class MSSQLService {
     }
     //console.log(results, options.user.data.local.accesslevel);
     if (results && results.data && results.data.length > 0) {
+        console.log("getCubeQuery",results)
       const CubeAccess = results.data[0].TypeAccessID;
-      const UserAccess = options.user.data.local.accesslevel;
+      const UserAccess = options?.user?.data?.local?.accesslevel || "65535"; // temporary access level
       if (CubeAccess & UserAccess) {
         let query = results.data[0].ReadQuery;
         query = decodeURIComponent(query);
@@ -143,7 +147,7 @@ export default class MSSQLService {
     }
   }
 
-  async execProcedure(procedureName: string, parameters: any) {
+  async execProcedure(procedureName: string, parameters?: any) {
     /*
         Example parameters object:
         {

@@ -30,14 +30,17 @@ const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 // const arguments = process.argv.splice(2);
 
 const app = express();
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(requestIdMiddleware)
 app.use(requestLoggingMiddleware)
+
+
 
 app.use('/api/stripe', stripeRouter)
 app.use('/api/mssql', mssqlRouter)
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 
 // This probably should be checked to make sure we still want this
 // app.use(cors());
