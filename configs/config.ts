@@ -42,7 +42,20 @@ const configs: Record<Environment, any> = {
               trustServerCertificate: true,
               enableArithAbort: true,
             }
-         }
+        },
+
+        PINECONE: {
+            environment: process.env.PINECONE_ENVIRONMENT,
+            apiKey: process.env.PINECONE_API_KEY,
+            indexName: process.env.PINECONE_INDEX,
+            pathName: process.env.PINECONE_PATH
+        },
+        CHATGPT: {
+            organizationId: process.env.CHATGPT_ORGANIZATION_ID,
+            projectId: process.env.CHATGPT_PROJECT_ID,
+            apiKey: process.env.CHATGPT_SECRET_TOKEN
+        }
+
     },
     test: {},
     prod: {}

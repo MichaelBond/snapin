@@ -1,6 +1,7 @@
-import * as mssqlControllers from '../controllers/mssqlController'
-import * as mysqlControllers from '../controllers/mysqlController'
+import * as mssqlController from '../controllers/mssqlController'
+import * as mysqlController from '../controllers/mysqlController'
 import * as stripeController from '../controllers/stripeController'
+import * as chatgptController from '../controllers/chatgptController'
 import { StripeEvents } from '../models/stripeModels'
 import logger from '../utils/logger'
 
@@ -12,21 +13,24 @@ export const stripeGetBalance: any = async () => {
 }
 
 export const mssqlTest: any = async () => {
-    return await mssqlControllers.getPageList()
+    return await mssqlController.getPageList()
 }
 export const mysqlTest: any = async () => {
-    return await mysqlControllers.getLeadInfo()
+    return await mysqlController.getLeadInfo()
+}
+export const chatgptTest: any = async () => {
+    return await chatgptController.askQuestion()
 }
 export const mssqlCube: any = async ( id: number) => {
-    return await mssqlControllers.getCube({ cubeId: id })
+    return await mssqlController.getCube({ cubeId: id })
 }
 export const mysqlCube: any = async (content: { id: number, params: any }) => {
     console.log(content.id)
-    const response = await mssqlControllers.getCube({ cubeId: content.id })
-    return await mysqlControllers.getQuery({ query: response.data, parameters: content.params})
+    const response = await mssqlController.getCube({ cubeId: content.id })
+    return await mysqlController.getQuery({ query: response.data, parameters: content.params})
 }
 export const mssqlCubeData: any = async ( id: number) => {
-    return await mssqlControllers.getCubeData({ cubeId: id })
+    return await mssqlController.getCubeData({ cubeId: id })
 }
 
 

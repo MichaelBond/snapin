@@ -12,10 +12,17 @@ mssqlRouter.get('/test', async (req: express.Request, res: express.Response) => 
         res.status(500).send(err)        
     }
 })
-
-mssqlRouter.get('/lead', async (req: express.Request, res: express.Response) => {
+mssqlRouter.get('/test', async (req: express.Request, res: express.Response) => {
     try {
-        const response = await handler.mysqlTest(); 
+        const response = await handler.mssqlTest(); 
+        res.send(response);
+    } catch (err) {
+        res.status(500).send(err)        
+    }
+})
+mssqlRouter.get('/chat', async (req: express.Request, res: express.Response) => {
+    try {
+        const response = await handler.chatgptTest(); 
         res.send(response);
     } catch (err) {
         res.status(500).send(err)        
