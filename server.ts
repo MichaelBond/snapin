@@ -1,14 +1,16 @@
 import fs from 'fs'
 import https from 'https'
 import express from 'express'
-import expressSession from "express-session";
+import session from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
-import mssqlRouter from './routes/mssqlRoute'
+import testRouter from './routes/mssqlRoute'
 import configs from './configs/config'
 import logger from './utils/logger'
 import { requestIdMiddleware } from './middleware/requestIdMiddleware'
 import requestLoggingMiddleware from './middleware/requestLoggingMiddleware';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -38,7 +40,7 @@ app.use(requestLoggingMiddleware)
 
 
 app.use('/api/stripe', stripeRouter)
-app.use('/api/mssql', mssqlRouter)
+app.use('/api/test', testRouter)
 
 
 
@@ -46,13 +48,19 @@ app.use('/api/mssql', mssqlRouter)
 // app.use(cors());
 
 app.set("trust proxy", true);
-const appSession = expressSession({
-  secret: SNAPIN_SESSION_SECRET || "",
-  cookie: { secure: true, maxAge: 3600000 },
-  saveUninitialized: false,
-  resave: false,
-});
-
+// const appSession = expressSession({
+//   secret: SNAPIN_SESSION_SECRET || "",
+//   cookie: { secure: true, maxAge: 3600000 },
+//   saveUninitialized: false,
+//   resave: false,
+// });
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 const blockedIps = [
   "192.168.1.1",
@@ -73,12 +81,9 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(appSession);
-
-// when implementing passport enable this  
-// app.use(passport.initialize());
-// app.use(passport.session(appSession));
-
+//app.use(appSession);
+app.use(passport.initialize());
+app.use(passport.session());
 app.set("view engine", "ejs");
 
 // This doesn't seem to be called anywhere?
@@ -116,6 +121,77 @@ app.use(express.static(`${__dirname}/public`));
 
 // check if needed
 // app.use(flash());
+const users = [
+  { id: 1, username: 'john', password: 'password123' },
+];
+
+// Configure Passport Local Strategy
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'username',
+      passwordField: 'password',
+    },
+    (username, password, done) => {
+      // Find user in database
+      const user = users.find(
+        (u) => u.username === username && u.password === password
+      );
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: 'Invalid credentials' });
+      }
+    }
+  )
+);
+
+// Serialize and Deserialize user for session
+passport.serializeUser((user: Express.User, done) => {
+  done(null, (user as any).id); // Store user ID in session
+});
+
+passport.deserializeUser((id: number, done) => {
+  const user = users.find((u) => u.id === id);
+  if (user) {
+    done(null, user);
+  } else {
+    done(null, false);
+  }
+});
+
+// Define login route
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/profile',
+  failureRedirect: '/login',
+  failureFlash: false,
+}));
+
+// Protected route example
+app.get('/profile', isAuthenticated, (req: Request, res: Response) => {
+  res.send(`Hello ${req.user?.username}, this is your profile!`);
+});
+
+app.get("/login", function (req, res) {
+  res.render("auth/login.ejs", { user: req.user, message: 'Test' });
+});
+// Route to handle logout
+app.post('/logout', (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect('/');
+  });
+});
+
+// Middleware to check if the user is authenticated
+function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+
 
 app.get("/healthcheck", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
