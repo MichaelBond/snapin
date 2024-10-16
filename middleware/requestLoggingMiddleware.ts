@@ -7,6 +7,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
         if (req.body) {
             logger.info(`[Body]: ${JSON.stringify(req.body)}`)
         }
+        const userHeader = req.header('user')
+        logger.info(`User Token: ${userHeader?.split(' ')[0]}`)
     } catch (err) {
         logger.error("Failed to parese Request: ", err)
     }

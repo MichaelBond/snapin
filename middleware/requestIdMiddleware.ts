@@ -9,11 +9,14 @@ const requestNamespace = createNamespace('request-namespace');
 export const requestIdMiddleware = (req: Request, res: Response, next: NextFunction) => {
     // Generate a new request ID
     const requestId = uuidv4();
+    const userHeader = req.header('user')
+    const userToken = userHeader?.split(' ')[0]
 
     // Run the next middleware within the CLS namespace context
     requestNamespace.run(() => {
         // Store the request ID in the namespace
         requestNamespace.set('requestId', requestId);
+        requestNamespace.set('mssqlUser', userToken)
         next();
     });
 };
@@ -22,3 +25,7 @@ export const requestIdMiddleware = (req: Request, res: Response, next: NextFunct
 export const getRequestId = () => {
     return requestNamespace.get('requestId');
 };
+
+export const getMSSQLUser = () => {
+    return requestNamespace.get('mssqlUser')
+}

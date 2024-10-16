@@ -9,6 +9,7 @@ import configs from './configs/config'
 import logger from './utils/logger'
 import { requestIdMiddleware } from './middleware/requestIdMiddleware'
 import requestLoggingMiddleware from './middleware/requestLoggingMiddleware';
+import clientRouter from './routes/clientRoute';
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -26,34 +27,6 @@ import requestLoggingMiddleware from './middleware/requestLoggingMiddleware';
 
 const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 
-// do we need this? 
-// const arguments = process.argv.splice(2);
-
-const app = express();
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(requestIdMiddleware)
-app.use(requestLoggingMiddleware)
-
-
-
-app.use('/api/stripe', stripeRouter)
-app.use('/api/mssql', mssqlRouter)
-
-
-
-// This probably should be checked to make sure we still want this
-// app.use(cors());
-
-app.set("trust proxy", true);
-const appSession = expressSession({
-  secret: SNAPIN_SESSION_SECRET || "",
-  cookie: { secure: true, maxAge: 3600000 },
-  saveUninitialized: false,
-  resave: false,
-});
-
-
 const blockedIps = [
   "192.168.1.1",
   "10.0.2.139",
@@ -62,24 +35,40 @@ const blockedIps = [
   "184.168.120.241",
 ];
 
-app.use((req, res, next) => {
-  const ip: any = req.ip;
-  const address: any = req.socket.remoteAddress;
-  if (blockedIps.includes(ip) || blockedIps.includes(address)) {
-    logger.info(`Ip blocked: ${ip} : ${address}`);
-    res.status(403).send("Access denied - IP Blocked");
-  } else {
-    next();
-  }
+const app = express();
+
+
+// Middleware
+const appSession = expressSession({
+  secret: SNAPIN_SESSION_SECRET || "",
+  cookie: { secure: true, maxAge: 3600000 },
+  saveUninitialized: false,
+  resave: false,
 });
 
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(appSession);
+app.use(requestIdMiddleware)
+app.use(requestLoggingMiddleware)
+app.use(cookieParser());
+app.use(express.static(`${__dirname}/public`));
+app.set("view engine", "ejs");
+app.set("trust proxy", true); // not sure what this does 
+
+// This probably should be checked to make sure we still want this, maybe put this in the client router if so? 
+// app.use(cors());
+
+// Routers
+app.use('/', clientRouter)
+app.use('/api/stripe', stripeRouter)
+app.use('/api/mssql', mssqlRouter)
+
 
 // when implementing passport enable this  
 // app.use(passport.initialize());
 // app.use(passport.session(appSession));
 
-app.set("view engine", "ejs");
 
 // This doesn't seem to be called anywhere?
 // const getClientAddress = function (req: Request) {
@@ -101,18 +90,11 @@ app.set("view engine", "ejs");
 
 // Check to make sure we need this
 
-// app.use("/sites", express.static(`${__dirname}/sites`));
-// app.use("/secure", express.static(`${__dirname}/sites`));
-// app.use("/secure/sites", express.static(`${__dirname}/sites`));
-// app.use("/secure/smartwebpro9", express.static(`${__dirname}/sites`));
-// app.use("/stripe", express.static(`${__dirname}/stripe`));
 
 // check if we need this
 
 // app.use(morgan("dev"));
 
-app.use(cookieParser());
-app.use(express.static(`${__dirname}/public`));
 
 // check if needed
 // app.use(flash());
@@ -121,27 +103,6 @@ app.get("/healthcheck", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.write("loaderio-f77de18d9ec250150dd814d3933b2026");
   res.end();
-});
-app.get("/security", function (req, res) {
-  res.render("public/dodsecurity.ejs", { user: req.user });
-});
-app.get("/privacy", function (req, res) {
-  res.render("public/privacy.ejs", { user: req.user });
-});
-app.get("/cookies", function (req, res) {
-  res.render("public/cookies.ejs", { user: req.user });
-});
-app.get("/refunds", function (req, res) {
-  res.render("public/refunds.ejs", { user: req.user });
-});
-app.get("/tandc", function (req, res) {
-  res.render("public/tandc.ejs", { user: req.user });
-});
-app.get("/license", function (req, res) {
-  res.render("public/license.ejs", { user: req.user });
-});
-app.get("/disclaimer", function (req, res) {
-  res.render("public/disclaimer.ejs", { user: req.user });
 });
 // This may need to be conditional based on if not dev?
 
@@ -155,13 +116,7 @@ app.get("/disclaimer", function (req, res) {
 //   next();
 // });
 
-app.get("/", function (req, res) {
-  res.render("auth/splash.ejs", { user: null });
-});
-app.get("/home", function (req, res) {
-  // ensure req.user exists, seems like on a request object in express it does not
-  res.render("auth/splash.ejs", { user: req?.user });
-});
+
 
 // app.get("/logout", function (req, res) {
 //   if (req._passport.session && req._passport.session.user) {
