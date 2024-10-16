@@ -8,3 +8,8 @@ INNER JOIN zepcrm.status as s ON s.sid = l.statusID where lid = '3mKQ71tw3aRP'`)
 export const getQuery = async ( content: { query: string, parameters?: any}) => {
     return await MYSQL.execQuery(content.query, content.parameters)
 }
+
+export const extractParameters = async ( parameters?: any) => {
+    return await MYSQL.extractParameters(parameters)
+}
+

@@ -5,9 +5,7 @@ import logger from "../utils/logger"
 import OpenAI from "openai";
 
 // https://github.com/openai/openai-node?tab=readme-ov-file#streaming-responses
-interface conversationInterface {
-    tools?: 
-}
+
 export default class ChatGPTServiceClass {
     apiKey: string
     organizationId: string

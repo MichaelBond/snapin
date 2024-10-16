@@ -1,5 +1,6 @@
 import config from '../configs/config'
 import logger from "../utils/logger"
+import axios from "axios"
 import { Pinecone } from "@pinecone-database/pinecone";
 
 export default class PineconeService {
@@ -74,8 +75,8 @@ export default class PineconeService {
           key = key ? key : this.pineconeKey;
           const index = this.pinecone.index(indexID);
           const response = await index.fetch(ids);
-          logger.info("Upload successful:", response.data);
-          return { err: null, data: response.data };
+          logger.info("Upload successful:", response);
+          return { err: null, data: response };
         } catch (error) {
           return { err: error, data: null };
         }
@@ -100,8 +101,8 @@ export default class PineconeService {
                     }
                 } 
             }); 
-            logger.info("Index created:", response.data);
-            return { err: null, data: response.data };
+            logger.info("Index created:", response);
+            return { err: null, data: response };
         }
         catch(err) {
             logger.error("Index failed to create:", err);
@@ -111,7 +112,7 @@ export default class PineconeService {
 }
 
 
-
+/*
 const SDK = {
   defaultModel: "gpt-4o-mini",
   chatModels: ["gpt-3.5-turbo-16k-0613", "gpt-4-turbo", "gpt-4o-mini"],
@@ -154,26 +155,26 @@ const SDK = {
     },
     describeIndex: async function( params ) {
       
-      /*
-        returns object
-        {
-            name: 'serverless-index',
-            dimension: 1536,
-            metric: 'cosine',
-            host: 'serverless-index-4zo0ijk.svc.us-west2-aws.pinecone.io',
-            deletionProtection: 'disabled',
-            spec: {
-              serverless: {
-                  cloud: 'aws',
-                  region: 'us-west-2'
-              }
-            },
-            status: {
-              ready: false,
-              state: 'Initializing'
-            }
-        }
-      */    
+      
+        // returns object
+        // {
+        //     name: 'serverless-index',
+        //     dimension: 1536,
+        //     metric: 'cosine',
+        //     host: 'serverless-index-4zo0ijk.svc.us-west2-aws.pinecone.io',
+        //     deletionProtection: 'disabled',
+        //     spec: {
+        //       serverless: {
+        //           cloud: 'aws',
+        //           region: 'us-west-2'
+        //       }
+        //     },
+        //     status: {
+        //       ready: false,
+        //       state: 'Initializing'
+        //     }
+        // }
+          
       try {
         const indexID = params.indexName ? params.indexName : indexName;
         const response = await pinecone.describeIndex(indexID);
@@ -208,27 +209,27 @@ const SDK = {
       }      
     },
     listIndexes: async function() {
-      /** returns 
-          indexes: [
-              {
-                name: 'serverless-index',
-                dimension: 1536,
-                metric: 'cosine',
-                host: 'serverless-index-4zo0ijk.svc.us-west2-aws.pinecone.io',
-                deletionProtection: 'disabled',
-                spec: {
-                  serverless: {
-                  cloud: 'aws',
-                      region: 'us-west-2',
-                    },
-                  },
-                  status: {
-                    ready: true,
-                    state: 'Ready',
-                  },
-              }
-          ],      
-      **/
+      //  returns 
+      //     indexes: [
+      //         {
+      //           name: 'serverless-index',
+      //           dimension: 1536,
+      //           metric: 'cosine',
+      //           host: 'serverless-index-4zo0ijk.svc.us-west2-aws.pinecone.io',
+      //           deletionProtection: 'disabled',
+      //           spec: {
+      //             serverless: {
+      //             cloud: 'aws',
+      //                 region: 'us-west-2',
+      //               },
+      //             },
+      //             status: {
+      //               ready: true,
+      //               state: 'Ready',
+      //             },
+      //         }
+      //     ],      
+      // 
       try {
         const response = await pinecone.listIndexes();
         return( { err: null, data: response });
@@ -239,17 +240,17 @@ const SDK = {
       }
     },
     indexStats: async function( params ) {
-      /** returns stats{
-             namespaces: {
-              '': { recordCount: 10 }
-              foo: { recordCount: 2000 },
-              bar: { recordCount: 2000 }
-            },
-            dimension: 1536,
-            indexFullness: 0,
-            totalRecordCount: 4010
-        }
-      **/
+      //  returns stats{
+      //        namespaces: {
+      //         '': { recordCount: 10 }
+      //         foo: { recordCount: 2000 },
+      //         bar: { recordCount: 2000 }
+      //       },
+      //       dimension: 1536,
+      //       indexFullness: 0,
+      //       totalRecordCount: 4010
+      //   }
+      // 
       try {
         const indexID = params.indexName ? params.indexName : indexName;
         const index = await pinecone.index( indexID )
@@ -274,16 +275,16 @@ const SDK = {
       }]);
     },
     query: async function( params ) {
-      /** returns {
-         matches: [
-          {
-            id: '556',
-            score: 1.00000012,
-            values: [],
-            sparseValues: undefined,
-            metadata: undefined
-          },
-      **/
+      //  returns {
+      //    matches: [
+      //     {
+      //       id: '556',
+      //       score: 1.00000012,
+      //       values: [],
+      //       sparseValues: undefined,
+      //       metadata: undefined
+      //     },
+      // 
       try {
         const indexId = params.indexID || indexName;
         const topK = params.topK ? params.topK : this.topK;
@@ -679,7 +680,8 @@ const SDK = {
       return { err: err, data: null };
     }
   },
-  /*
-  endatoSearch: async function ()
-  */
+  
+  // endatoSearch: async function ()
+  
 };
+*/
