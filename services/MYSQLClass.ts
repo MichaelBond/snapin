@@ -1,7 +1,6 @@
 import db from "mysql"
 import config from '../configs/config'
 import logger from "../utils/logger"
-import fs from "fs"
 
 export default class MYSQLService {
   pool: any
@@ -9,7 +8,7 @@ export default class MYSQLService {
   dbSchema: string
   options: any
 
-  
+
   constructor(dbSchema: string) {
     this.dbSchema = dbSchema
     this.isReady = false
@@ -34,7 +33,7 @@ export default class MYSQLService {
   }
 
   extractParameters(content: any) {
-    let parameters:any[] = [];
+    let parameters: any[] = [];
     for (let key in content) {
       parameters.push(content[key]);
     }
@@ -125,14 +124,14 @@ export default class MYSQLService {
       query = query.replace(/\n/g, " ");
       for (let key in params) {
         let item = params[key];
-       // console.log("MYSQL VARIABLES: ", typeof item, item);
+        // console.log("MYSQL VARIABLES: ", typeof item, item);
         if (typeof item === "string") {
           query = query.replace(`?${key}`, `'${item}'`);
         } else {
           query = query.replace(`?${key}`, `${item}`);
         }
       }
-     // console.log("MYSQL PARAMETERS: ", params, query);
+      // console.log("MYSQL PARAMETERS: ", params, query);
     }
     try {
       const results = await new Promise((resolve, reject) => {

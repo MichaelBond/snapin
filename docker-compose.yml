@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   mysql:
@@ -19,28 +19,12 @@ services:
     container_name: mssql_db
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "StrongPassword!123"
+      SA_PASSWORD: "Password123!"
     ports:
       - "1433:1433"
+    user: root  # Run as root
     volumes:
       - mssql_data:/var/opt/mssql
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "/opt/mssql-tools/bin/sqlcmd",
-          "-S",
-          "localhost",
-          "-U",
-          "sa",
-          "-P",
-          "StrongPassword!123",
-          "-Q",
-          "SELECT 1",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   neo4j:
     image: neo4j:5.5
@@ -48,8 +32,8 @@ services:
     environment:
       NEO4J_AUTH: neo4j/adminpassword
     ports:
-      - "7474:7474" # Browser UI
-      - "7687:7687" # Bolt protocol
+      - "7474:7474"  # Browser UI
+      - "7687:7687"  # Bolt protocol
     volumes:
       - neo4j_data:/data
 
@@ -61,8 +45,8 @@ services:
       MINIO_ROOT_PASSWORD: minioadminpassword
     command: server /data
     ports:
-      - "9000:9000" # S3 API Port
-      - "9001:9001" # Admin Console Port
+      - "9000:9000"  # S3 API Port
+      - "9001:9001"  # Admin Console Port
     volumes:
       - minio_data:/data
 

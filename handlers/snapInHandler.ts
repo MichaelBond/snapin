@@ -14,21 +14,23 @@ export const stripeGetBalance: any = async () => {
 export const mssqlTest: any = async () => {
     return await mssqlControllers.getPageList()
 }
+
 export const mysqlTest: any = async () => {
     return await mysqlControllers.getLeadInfo()
 }
-export const mssqlCube: any = async ( id: number) => {
+
+export const mssqlCube: any = async (id: number) => {
     return await mssqlControllers.getCube({ cubeId: id })
 }
+
 export const mysqlCube: any = async (content: { id: number, params: any }) => {
     console.log(content.id)
     const response = await mssqlControllers.getCube({ cubeId: content.id })
-    return await mysqlControllers.getQuery({ query: response.data, parameters: content.params})
+    return await mysqlControllers.getQuery({ query: response.data, parameters: content.params })
 }
-export const mssqlCubeData: any = async ( id: number) => {
+export const mssqlCubeData: any = async (id: number) => {
     return await mssqlControllers.getCubeData({ cubeId: id })
 }
-
 
 // as needed we will create cases for dealing with webhook types, for now this is good 
 export const stripeWebhook: any = async (event: any) => {

@@ -1,11 +1,5 @@
 import MYSQLServiceClass from "../services/MYSQLClass";
-import logger from '../utils/logger'
-let MYSQL
-try {
-    MYSQL = new MYSQLServiceClass("SmartWeb")
-} catch (err) {
-    logger.error("Error connectiong to mysql")
-}
+const MYSQL = new MYSQLServiceClass("SmartWeb")
 
 export const getLeadInfo = async () => {
     return await MYSQL.execQuery(`SELECT l.fName, l.lName, l.email, l.phone, l.city, l.state, l.zip, l.address_line_1, l.address_line_2, l.timezone, l.latitude, l.longitude, l.statusID, s.name FROM zepcrm.leads as l

@@ -166,7 +166,7 @@ app.use(function (req, res) {
   logger.info(req.socket.remoteAddress);
 });
 
-if (ENV === "dev") {
+if (ENV === "dev" || ENV === "docker") {
   // When running locally 
   app.listen(SNAPIN_WEBPORT, () => {
     // This is fine, it's only locally, but could be ran in logger as well
