@@ -9,6 +9,10 @@ SNAPIN_SESSION_SECRET=<Random String>
 STRIPE_API_KEY=<Stripe Test api key>
 ```
 
+## Run Docker Services 
+Make sure docker is installed 
+```docker compose up```
+
 ## .env for other environments
 ```
 ENV=
