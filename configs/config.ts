@@ -67,12 +67,12 @@ const configs: Record<Environment, any> = {
             database: process.env.QUANTREX_DATABASE,
             user: process.env.QUANTREX_USER,
             password: process.env.QUANTREX_PASSWORD,
-            port: parseInt(process.env.QUANTREX_PORT, 10),
-            requestTimeout: parseInt(process.env.QUANTREX_REQUEST_TIMEOUT, 10),
+            port: parseInt(process.env.QUANTREX_PORT as string, 10),
+            requestTimeout: parseInt(process.env.QUANTREX_REQUEST_TIMEOUT as string, 10),
             pool: {
-                max: parseInt(process.env.QUANTREX_POOL_MAX, 10),
-                min: parseInt(process.env.QUANTREX_POOL_MIN, 10),
-                idleTimeoutMillis: parseInt(process.env.QUANTREX_IDLE_TIMEOUT, 10)
+                max: parseInt(process.env.QUANTREX_POOL_MAX as string, 10),
+                min: parseInt(process.env.QUANTREX_POOL_MIN as string, 10),
+                idleTimeoutMillis: parseInt(process.env.QUANTREX_IDLE_TIMEOUT as string, 10)
             },
             options: {
                 trustServerCertificate: true,
