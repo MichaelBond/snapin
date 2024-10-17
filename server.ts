@@ -14,6 +14,7 @@ import publicRouter from './routes/publicClientRoute';
 import passport from 'passport';
 import isAuthenticated from './middleware/isAuthenticated'
 import privateClientRouter from './routes/privateClientRoute'
+import { userStoreMiddleware } from './middleware/userDataCapture'
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -88,7 +89,7 @@ app.use(publicRouter)
 app.use("/auth", authRouter)
 
 app.use(isAuthenticated)
-
+app.use(userStoreMiddleware)
 // Protected routes
 app.use(privateClientRouter)
 app.use('/api/test', testRouter)
