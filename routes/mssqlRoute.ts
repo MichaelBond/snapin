@@ -17,10 +17,17 @@ mssqlRouter.get('/test', async (req: express.Request, res: express.Response) => 
         res.status(500).send(err)
     }
 })
-
-mssqlRouter.get('/lead', async (req: express.Request, res: express.Response) => {
+mssqlRouter.get('/test', async (req: express.Request, res: express.Response) => {
     try {
-        const response = await handler.mysqlTest();
+        const response = await handler.mssqlTest();
+        res.send(response);
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+mssqlRouter.get('/chat', async (req: express.Request, res: express.Response) => {
+    try {
+        const response = await handler.chatgptTest();
         res.send(response);
     } catch (err) {
         res.status(500).send(err)
@@ -37,6 +44,16 @@ mssqlRouter.get('/cube/:id', async (req: express.Request, res: express.Response)
     }
 })
 
+mssqlRouter.get('/neo4j/cube/:id', async (req: express.Request, res: express.Response) => {
+    try {
+        console.log(req.params.id)
+        const response = await handler.neo4jCube({ id: req.params.id });
+        res.send(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
+})
 mssqlRouter.post('/zepcrm/cube/:id', async (req: express.Request, res: express.Response) => {
     try {
         const params = req.body
@@ -48,4 +65,20 @@ mssqlRouter.post('/zepcrm/cube/:id', async (req: express.Request, res: express.R
         res.status(500).send(err)
     }
 })
+
+mssqlRouter.post("/crm/db/query/:id", async (req, res) => {
+    const options = {
+        cubeId: req.params.id,
+        user: 33,
+    };
+
+    try {
+        const results = await handler.crmDbQuery(options, req.body)
+        res.status(200).json(results.data);
+    }
+    catch (err: any) {
+        res.status(err.status || 500).send(err.data)
+    }
+});
+
 export default mssqlRouter

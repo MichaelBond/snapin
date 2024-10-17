@@ -14,6 +14,14 @@ export const getPageList = async () => {
 export const getCube = async (content: { cubeId: number }) => {
     return await MSSQL.getCubeQuery(content);
 }
+export const execQuery = async (query: string, parameters?: any) => {
+    return await MSSQL.execQuery(query, parameters);
+}
+
+export const getVarType = async (param: any) => {
+    return await MSSQL.getVarType(param);
+}
+
 export const getCubeData = async (content: { cubeId: number }) => {
     const response = await MSSQL.getCubeQuery(content);
     return await MSSQL.execQuery(response.data);

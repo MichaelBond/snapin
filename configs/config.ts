@@ -78,6 +78,25 @@ const configs: Record<Environment, any> = {
                 trustServerCertificate: true,
                 enableArithAbort: true,
             }
+        },
+        PINECONE: {
+            environment: process.env.PINECONE_ENVIRONMENT,
+            apiKey: process.env.PINECONE_API_KEY,
+            indexName: process.env.PINECONE_INDEX,
+            pathName: process.env.PINECONE_PATH
+        },
+        CHATGPT: {
+            organizationId: process.env.CHATGPT_ORGANIZATION_ID,
+            projectId: process.env.CHATGPT_PROJECT_ID,
+            apiKey: process.env.CHATGPT_SECRET_TOKEN
+        },
+        NEO4J: {
+            uriFree: process.env.NEO4J_URI_FREE,
+            uri: process.env.NEO4J_URI,
+            userName: process.env.NEO4J_USERNAME,
+            passwordFree: process.env.NEO4J_PASSWORD_FREE,
+            password: process.env.NEO4J_PASSWORD,
+            database: process.env.NEO4J_DATABASE
         }
     },
     test: {},

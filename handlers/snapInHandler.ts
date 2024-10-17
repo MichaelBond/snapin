@@ -1,6 +1,8 @@
-import * as mssqlControllers from '../controllers/mssqlController'
-import * as mysqlControllers from '../controllers/mysqlController'
+import * as mssqlController from '../controllers/mssqlController'
+import * as mysqlController from '../controllers/mysqlController'
 import * as stripeController from '../controllers/stripeController'
+import * as chatgptController from '../controllers/chatgptController'
+import * as neo4jController from '../controllers/neo4jController'
 import { StripeEvents } from '../models/stripeModels'
 import logger from '../utils/logger'
 
@@ -8,7 +10,7 @@ import logger from '../utils/logger'
 // All routes will call a function in here abstracting 
 
 export const bryceTest: any = async () => {
-    return await mssqlControllers.bryceSeeAllDbs()
+    return await mssqlController.bryceSeeAllDbs()
 }
 
 export const stripeGetBalance: any = async () => {
@@ -16,24 +18,49 @@ export const stripeGetBalance: any = async () => {
 }
 
 export const mssqlTest: any = async () => {
-    return await mssqlControllers.getPageList()
+    return await mssqlController.getPageList()
 }
 
 export const mysqlTest: any = async () => {
-    return await mysqlControllers.getLeadInfo()
+    return await mysqlController.getLeadInfo()
+}
+
+export const chatgptTest: any = async () => {
+    return await chatgptController.askQuestion()
 }
 
 export const mssqlCube: any = async (id: number) => {
-    return await mssqlControllers.getCube({ cubeId: id })
+    return await mssqlController.getCube({ cubeId: id })
 }
 
 export const mysqlCube: any = async (content: { id: number, params: any }) => {
     console.log(content.id)
-    const response = await mssqlControllers.getCube({ cubeId: content.id })
-    return await mysqlControllers.getQuery({ query: response.data, parameters: content.params })
+    const response = await mssqlController.getCube({ cubeId: content.id })
+    return await mysqlController.getQuery({ query: response.data, parameters: content.params })
 }
 export const mssqlCubeData: any = async (id: number) => {
-    return await mssqlControllers.getCubeData({ cubeId: id })
+    return await mssqlController.getCubeData({ cubeId: id })
+}
+
+export const neo4jCube: any = async (content: { id: number }) => {
+    console.log(content.id)
+    const response = await mssqlController.getCube({ cubeId: content.id })
+    return await neo4jController.getQuery(response.data)
+}
+
+export const crmDbQuery = async (options: any, params: any) => {
+    const cubeQuery = await mssqlController.getCube(options);
+    const Parameters = mysqlController.extractParameters(params);
+
+    if (cubeQuery.err) {
+        throw { status: 403, data: cubeQuery.err }
+    }
+
+    const results = await mysqlController.getQuery({ query: cubeQuery.data, parameters: Parameters });
+    if (results.err) {
+        throw { status: 500, data: results.err }
+    }
+    return (results)
 }
 
 // as needed we will create cases for dealing with webhook types, for now this is good 
