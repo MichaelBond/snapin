@@ -54,8 +54,8 @@ app.use(requestLoggingMiddleware)
 app.use(cookieParser());
 app.use(express.static(`${__dirname}/public`));
 app.set("view engine", "ejs");
-app.set("trust proxy", true); // not sure what this does 
 
+// app.set("trust proxy", true); // not sure what this does 
 // This probably should be checked to make sure we still want this, maybe put this in the client router if so? 
 // app.use(cors());
 

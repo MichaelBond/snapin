@@ -4,6 +4,12 @@ import logger from "../utils/logger";
 
 const mssqlRouter = express.Router();
 
+mssqlRouter.get('/bryce', async (req, res) => {
+    const data = await handler.bryceTest()
+    res.send(data)
+
+})
+
 mssqlRouter.get('/test', async (req: express.Request, res: express.Response) => {
     try {
         const response = await handler.mssqlTest();

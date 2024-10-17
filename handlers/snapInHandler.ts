@@ -7,6 +7,10 @@ import logger from '../utils/logger'
 // This file will have all controllers feeding into it
 // All routes will call a function in here abstracting 
 
+export const bryceTest: any = async () => {
+    return await mssqlControllers.bryceSeeAllDbs()
+}
+
 export const stripeGetBalance: any = async () => {
     return await stripeController.getBalance()
 }

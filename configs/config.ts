@@ -24,7 +24,7 @@ const configs: Record<Environment, any> = {
             host: "localhost",
             port: 3306,
             user: "user",
-            password: "userpassword",
+            password: "YourStrong!Passw0rd",
             database: "exampledb",
         },
         MSSQL_QUANTREX: {
@@ -84,5 +84,5 @@ const configs: Record<Environment, any> = {
     prod: {}
 }
 
-console.log(configs[env])
+logger.debug(JSON.stringify(configs[env]))
 export default configs[env]
