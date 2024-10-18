@@ -1,8 +1,8 @@
 import * as mssqlController from '../controllers/mssqlController'
 import * as mysqlController from '../controllers/mysqlController'
 import * as stripeController from '../controllers/stripeController'
-// import * as chatgptController from '../controllers/chatgptController'
-// import * as neo4jController from '../controllers/neo4jController'
+import * as chatgptController from '../controllers/chatgptController'
+import * as neo4jController from '../controllers/neo4jController'
 import { StripeEvents } from '../models/stripeModels'
 import logger from '../utils/logger'
 
@@ -10,7 +10,8 @@ import logger from '../utils/logger'
 // All routes will call a function in here abstracting 
 
 export const bryceTest: any = async () => {
-    return await mssqlController.bryceSeeAllDbs()
+    await mssqlController.bryceSeeAllDbs()
+    return await neo4jController.getQuery("query")
 }
 
 export const stripeGetBalance: any = async () => {

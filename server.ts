@@ -84,7 +84,7 @@ publicRouter.get("/healthcheck", (req, res) => {
 });
 
 app.use(publicRouter)
-
+app.use('/api/test', testRouter) // this is moved here so we can test without validation
 // AUTHORIZATION ROUTES
 app.use("/auth", authRouter)
 
@@ -92,7 +92,6 @@ app.use(isAuthenticated)
 app.use(userStoreMiddleware)
 // Protected routes
 app.use(privateClientRouter)
-app.use('/api/test', testRouter)
 app.use('/api/stripe', stripeRouter)
 
 // This doesn't seem to be called anywhere?
