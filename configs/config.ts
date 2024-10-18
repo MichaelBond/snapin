@@ -62,6 +62,17 @@ const configs: Record<Environment, any> = {
             // passwordFree: process.env.NEO4J_PASSWORD_FREE,
             password: "adminpassword",
             database: "snapin"
+        },
+        S3: {
+            OPTIONS: {
+                endpoint: "http://localhost:9000",
+                accessKeyId: "minioadmin",
+                secretAccessKey: "minioadminpassword",
+                s3ForcePathStyle: true,
+                signatureVersion: "v4",
+                region: "us-east-1",
+            },
+            BUCKET: "bucket"
         }
     },
     dev: {
