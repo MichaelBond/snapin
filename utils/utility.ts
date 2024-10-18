@@ -31,9 +31,11 @@ module.exports = {
      * @returns {string} - The subscriber ID wrapped in single quotes, or the default UUID if no subscriber ID is found.
      */
     getSubscriber: (req: Request): string => {
+        // This will be handled by file ../middleware/userDataCapture
+
         // Ensure req.user and req.user.data are defined, otherwise use the default UUID.
         const subscriberId = req?.user?.data?.subscriberid || default_uuid;
-      
+
         // Return the subscriber ID wrapped in single quotes.
         return `'${subscriberId}'`;
     },
@@ -386,7 +388,7 @@ module.exports = {
         let smart: SmartObject = {
             compress: false,
             size: layout.length,
-            minSize: layout.length,            
+            minSize: layout.length,
             format: format,
             layout: layout,
             records: null,

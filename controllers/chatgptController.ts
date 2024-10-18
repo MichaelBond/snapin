@@ -1,4 +1,3 @@
-import logger from '../utils/logger'
 import ChatGPTServiceClass from "../services/ChatGPTClass";
 
 const chatGPT = new ChatGPTServiceClass()
