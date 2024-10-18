@@ -3,6 +3,7 @@ import * as mysqlController from '../controllers/mysqlController'
 import * as stripeController from '../controllers/stripeController'
 import * as chatgptController from '../controllers/chatgptController'
 import * as neo4jController from '../controllers/neo4jController'
+import * as s3Controller from '../controllers/s3Controller'
 import { StripeEvents } from '../models/stripeModels'
 import logger from '../utils/logger'
 
@@ -11,7 +12,8 @@ import logger from '../utils/logger'
 
 export const bryceTest: any = async () => {
     await mssqlController.bryceSeeAllDbs()
-    return await neo4jController.getQuery("query")
+    await neo4jController.getQuery("query")
+    return await s3Controller.getBuckets()
 }
 
 export const stripeGetBalance: any = async () => {
@@ -87,5 +89,6 @@ export const stripeWebhook: any = async (event: any) => {
         }
         default:
             logger.info(`Unhandled event type ${event.type}`);
+            logger.info(event.data)
     }
 }

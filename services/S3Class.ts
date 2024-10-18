@@ -4,15 +4,22 @@ import logger from '../utils/logger';
 
 export default class S3Service {
   s3: AWS.S3;
-  bucketName: string;
   options: any;
-
-  constructor(bucketName: string) {
-    this.bucketName = bucketName;
-    this.s3 = new AWS.S3(config.AWS_S3_OPTIONS); // S3 options from config, including region and credentials
-    this.options = config.AWS_S3_OPTIONS;
+  bucketName: string
+  constructor() {
+    this.bucketName = config.S3.BUCKET
+    this.options = config.S3.OPTIONS
+    console.log('this.options ==> ', this.options)
+    this.s3 = new AWS.S3(this.options);
   }
-
+  async getAllBuckets() {
+    try {
+      const data = await this.s3.listBuckets().promise();
+      return data.Buckets;
+    } catch (err) {
+      logger.error("Error listing buckets:", err);
+    }
+  }
   // Uploads a file to S3
   async uploadFile(key: string, body: Buffer | string, contentType: string) {
     try {
