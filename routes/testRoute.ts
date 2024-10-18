@@ -43,16 +43,17 @@ testRouter.get('/cube/:id', async (req: express.Request, res: express.Response) 
     }
 })
 
-// testRouter.get('/neo4j/cube/:id', async (req: express.Request, res: express.Response) => {
-//     try {
-//         console.log(req.params.id)
-//         const response = await handler.neo4jCube({ id: req.params.id });
-//         res.send(response);
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send(err)
-//     }
-// })
+testRouter.get('/neo4j/cube/:id', async (req: express.Request, res: express.Response) => {
+    try {
+        console.log(req.params.id)
+        const response = await handler.neo4jCube({ id: req.params.id });
+        res.send(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
+})
+
 testRouter.post('/zepcrm/cube/:id', async (req: express.Request, res: express.Response) => {
     try {
         const params = req.body

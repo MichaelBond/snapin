@@ -43,11 +43,11 @@ export const mssqlCubeData: any = async (id: number) => {
     return await mssqlController.getCubeData({ cubeId: id })
 }
 
-// export const neo4jCube: any = async (content: { id: number }) => {
-//     console.log(content.id)
-//     const response = await mssqlController.getCube({ cubeId: content.id })
-//     return await neo4jController.getQuery(response.data)
-// }
+export const neo4jCube: any = async (content: { id: number }) => {
+    console.log(content.id)
+    const response = await mssqlController.getCube({ cubeId: content.id })
+    return await neo4jController.getQuery(response.data)
+}
 
 export const crmDbQuery = async (options: any, params: any) => {
     const cubeQuery = await mssqlController.getCube(options);
