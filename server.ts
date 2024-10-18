@@ -1,6 +1,6 @@
 import fs from 'fs'
 import https from 'https'
-import express, { Request, Response } from 'express'
+import express from 'express'
 import session from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
@@ -17,20 +17,7 @@ import privateClientRouter from './routes/privateClientRoute'
 import { userStoreMiddleware } from './middleware/userDataCapture'
 import blockIPs from './middleware/blockIPs';
 
-// Probably should not have especially in prod 
-// const cors = require("cors");
-
-// Need to install
-// const flash = require("connect-flash");
-// const morgan = require("morgan");
-// const multiparty = require("connect-multiparty");
-
-// Other files that are not yet included
-
-// var httpMsgs = require("./app/httpmsgs");
-
 const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
-
 
 const app = express();
 
@@ -47,7 +34,6 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(requestIdMiddleware)
 app.use(requestLoggingMiddleware)
 
-
 app.use(
   session({
     secret: SNAPIN_SESSION_SECRET,
@@ -63,7 +49,6 @@ app.use(passport.session());
 
 // API ROUTES
 // PUBLIC ROUTES
-
 publicRouter.get("/healthcheck", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.write("loaderio-f77de18d9ec250150dd814d3933b2026");
@@ -71,7 +56,10 @@ publicRouter.get("/healthcheck", (req, res) => {
 });
 
 app.use(publicRouter)
-app.use('/api/test', testRouter) // this is moved here so we can test without validation
+if (ENV === "dev" || ENV === "docker") {
+  app.use('/api/test', testRouter) // this is moved here so we can test without validation
+}
+
 // AUTHORIZATION ROUTES
 app.use("/auth", authRouter)
 
@@ -84,7 +72,6 @@ app.use('/api/stripe', stripeRouter)
 if (ENV === "dev" || ENV === "docker") {
   // When running locally 
   app.listen(SNAPIN_WEBPORT, () => {
-    // This is fine, it's only locally, but could be ran in logger as well
     logger.info(`App listening on port ${SNAPIN_WEBPORT}`);
   });
 } else {
@@ -94,12 +81,22 @@ if (ENV === "dev" || ENV === "docker") {
     cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
   };
   https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
-    // We should be doig a logger 
     logger.info("Express server listening on port " + SNAPIN_WEBPORT);
   });
 }
 
+// This is what was here before, will leave down here till needed: 
 
+// Probably should not have especially in prod 
+// const cors = require("cors");
+
+// Need to install
+// const flash = require("connect-flash");
+// const morgan = require("morgan");
+// const multiparty = require("connect-multiparty");
+
+// Other files that are not yet included
+// var httpMsgs = require("./app/httpmsgs");
 
 
 // This doesn't seem to be called anywhere?
