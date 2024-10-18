@@ -15,6 +15,7 @@ import passport from 'passport';
 import isAuthenticated from './middleware/isAuthenticated'
 import privateClientRouter from './routes/privateClientRoute'
 import { userStoreMiddleware } from './middleware/userDataCapture'
+import blockIPs from './middleware/blockIPs';
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -30,36 +31,22 @@ import { userStoreMiddleware } from './middleware/userDataCapture'
 
 const { ENV, SNAPIN_WEBPORT, SNAPIN_SESSION_SECRET } = configs;
 
-const blockedIps = [
-  "192.168.1.1",
-  "10.0.2.139",
-  "10.0.15.43",
-  "149.36.51.12",
-  "184.168.120.241",
-];
 
 const app = express();
 
 // Middleware 
+app.use(blockIPs);
 app.use(cookieParser());
 app.use(express.static(`${__dirname}/public`));
 
 app.set("view engine", "ejs");
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 app.use(requestIdMiddleware)
 app.use(requestLoggingMiddleware)
 
-app.use((req, res, next) => {
-  const ip: any = req.ip;
-  const address: any = req.socket.remoteAddress;
-  if (blockedIps.includes(ip) || blockedIps.includes(address)) {
-    logger.info(`Ip blocked: ${ip} : ${address}`);
-    res.status(403).send("Access denied - IP Blocked");
-  } else {
-    next();
-  }
-});
 
 app.use(
   session({
@@ -93,6 +80,27 @@ app.use(userStoreMiddleware)
 // Protected routes
 app.use(privateClientRouter)
 app.use('/api/stripe', stripeRouter)
+
+if (ENV === "dev" || ENV === "docker") {
+  // When running locally 
+  app.listen(SNAPIN_WEBPORT, () => {
+    // This is fine, it's only locally, but could be ran in logger as well
+    logger.info(`App listening on port ${SNAPIN_WEBPORT}`);
+  });
+} else {
+  // When running on EC2
+  const options = {
+    key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
+    cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
+  };
+  https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
+    // We should be doig a logger 
+    logger.info("Express server listening on port " + SNAPIN_WEBPORT);
+  });
+}
+
+
+
 
 // This doesn't seem to be called anywhere?
 // const getClientAddress = function (req: Request) {
@@ -133,45 +141,32 @@ app.use('/api/stripe', stripeRouter)
 //   next();
 // });
 
-app.use((req, res, next) => {
-  // If no previous route/method matched, we end up here (404 Not Found)
-  logger.info(`Route Invalid: ${req.socket.remoteAddress}, ${req.ip}`);
-  if (req.accepts("html")) {
-    res
-      .status(404)
-      .send(
-        `<html><body><h1>404 - Not Found</h1><h2>Sorry, that route doesn't exist. Conducting reverse tracking  on  ${req.socket.remoteAddress}, ${req.ip}</h2></body></html>`
-      );
-  } else if (req.accepts("json")) {
-    res.status(404).json({
-      error: "Not Found",
-      message: `<h1>Sorry, that route doesn't exist.</h1><h2>Conducting reverse tracking on  ${req.socket.remoteAddress}, ${req.ip}.</h2>`,
-    });
-  } else {
-    res
-      .status(404)
-      .type("txt")
-      .send(
-        `<h1>Sorry, that route doesn't exist.</h1><h2>Conducting reverse tracking on  ${req.socket.remoteAddress}, ${req.ip}.</h2>`
-      );
-  }
-});
+
+// This is most likely no longer needed because when the user tries to hit a route that no longer exists
+// If they are not logged in, they will immediately be sent to /login page
+
+// app.use((req, res, next) => {
+//   // If no previous route/method matched, we end up here (404 Not Found)
+//   logger.info(`Route Invalid: ${req.socket.remoteAddress}, ${req.ip}`);
+//   if (req.accepts("html")) {
+//     res
+//       .status(404)
+//       .send(
+//         `<html><body><h1>404 - Not Found</h1><h2>Sorry, that route doesn't exist. Conducting reverse tracking  on  ${req.socket.remoteAddress}, ${req.ip}</h2></body></html>`
+//       );
+//   } else if (req.accepts("json")) {
+//     res.status(404).json({
+//       error: "Not Found",
+//       message: `<h1>Sorry, that route doesn't exist.</h1><h2>Conducting reverse tracking on  ${req.socket.remoteAddress}, ${req.ip}.</h2>`,
+//     });
+//   } else {
+//     res
+//       .status(404)
+//       .type("txt")
+//       .send(
+//         `<h1>Sorry, that route doesn't exist.</h1><h2>Conducting reverse tracking on  ${req.socket.remoteAddress}, ${req.ip}.</h2>`
+//       );
+//   }
+// });
 
 
-if (ENV === "dev" || ENV === "docker") {
-  // When running locally 
-  app.listen(SNAPIN_WEBPORT, () => {
-    // This is fine, it's only locally, but could be ran in logger as well
-    logger.info(`App listening on port ${SNAPIN_WEBPORT}`);
-  });
-} else {
-  // When running on EC2
-  const options = {
-    key: fs.readFileSync(`${__dirname}/ssl/smartweb_key.pem`),
-    cert: fs.readFileSync(`${__dirname}/ssl/smartweb_crt.pem`),
-  };
-  https.createServer(options, app).listen(SNAPIN_WEBPORT, function () {
-    // We should be doig a logger 
-    logger.info("Express server listening on port " + SNAPIN_WEBPORT);
-  });
-}
