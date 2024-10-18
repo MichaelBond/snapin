@@ -122,5 +122,4 @@ const configs: Record<Environment, any> = {
     prod: {}
 }
 
-logger.debug(JSON.stringify(configs[env]))
 export default configs[env]

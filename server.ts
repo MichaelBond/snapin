@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express'
 import session from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
-import testRouter from './routes/mssqlRoute'
+import testRouter from './routes/testRoute'
 import authRouter from './routes/authRoute';
 import configs from './configs/config'
 import logger from './utils/logger'

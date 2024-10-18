@@ -26,9 +26,9 @@ export const mysqlTest: any = async () => {
     return await mysqlController.getLeadInfo()
 }
 
-// export const chatgptTest: any = async () => {
-//     return await chatgptController.askQuestion()
-// }
+export const chatgptTest: any = async () => {
+    return await chatgptController.askQuestion()
+}
 
 export const mssqlCube: any = async (id: number) => {
     return await mssqlController.getCube({ cubeId: id })
