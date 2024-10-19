@@ -43,6 +43,36 @@ const configs: Record<Environment, any> = {
                 trustServerCertificate: true,
                 encrypt: false
             }
+        },
+        PINECONE: {
+            environment: process.env.PINECONE_ENVIRONMENT,
+            apiKey: process.env.PINECONE_API_KEY,
+            indexName: process.env.PINECONE_INDEX,
+            pathName: process.env.PINECONE_PATH
+        },
+        CHATGPT: {
+            organizationId: process.env.CHATGPT_ORGANIZATION_ID,
+            projectId: process.env.CHATGPT_PROJECT_ID,
+            apiKey: process.env.CHATGPT_SECRET_TOKEN
+        },
+        NEO4J: {
+            // uriFree: process.env.NEO4J_URI_FREE,
+            uri: "bolt://localhost:7687",
+            userName: "neo4j",
+            // passwordFree: process.env.NEO4J_PASSWORD_FREE,
+            password: "adminpassword",
+            database: "snapin"
+        },
+        S3: {
+            OPTIONS: {
+                endpoint: "http://localhost:9000",
+                accessKeyId: "minioadmin",
+                secretAccessKey: "minioadminpassword",
+                s3ForcePathStyle: true,
+                signatureVersion: "v4",
+                region: "us-east-1",
+            },
+            BUCKET: "bucket"
         }
     },
     dev: {
@@ -103,5 +133,4 @@ const configs: Record<Environment, any> = {
     prod: {}
 }
 
-logger.debug(JSON.stringify(configs[env]))
 export default configs[env]
