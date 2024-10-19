@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: YourStrong!Passw0rd
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123!"
+    ports:
+      - "1433:1433"
+    user: root  # Run as root
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+  neo4j:
+    image: neo4j:5.5
+    container_name: neo4j_db
+    environment:
+      NEO4J_AUTH: neo4j/adminpassword
+    ports:
+      - "7474:7474"  # Browser UI
+      - "7687:7687"  # Bolt protocol
+    volumes:
+      - neo4j_data:/data
+
+  minio:
+    image: minio/minio
+    container_name: minio_s3
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    command: server /data
+    ports:
+      - "9000:9000"  # S3 API Port
+      - "9001:9001"  # Admin Console Port
+    volumes:
+      - minio_data:/data
+
+volumes:
+  mysql_data:
+  mssql_data:
+  neo4j_data:
+  minio_data:
