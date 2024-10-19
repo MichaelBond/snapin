@@ -9,7 +9,7 @@ type Environment = "docker" | "dev" | "test" | "prod"
 const env = process.env?.ENV as Environment
 
 const getMYSQLCert = () => {
-    return env === "docker" ? null : fs.readFileSync("../ssl/DigiCertGlobalRootCA.crt.pem")
+    return env === "docker" ? null : fs.readFileSync("./ssl/DigiCertGlobalRootCA.crt.pem")
 }
 
 const configs: Record<Environment, any> = {
