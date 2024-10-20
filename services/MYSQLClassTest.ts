@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+import mysql from "mysql";
 import config from '../configs/config';
 import logger from "../utils/logger";
 
