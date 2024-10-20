@@ -8,9 +8,8 @@ export default class S3Service {
 
   constructor(bucketName: string) {
     this.bucketName = bucketName;
-    this.s3Client = new S3Client({ region: config.AWS_S3_OPTIONS.region }); // Configure the S3 client with the region
+    this.s3Client = new S3Client({ region: config.default.AWS_S3_OPTIONS.region }); // Configure the S3 client with the region
   }
-
   // Uploads a file to S3
   async uploadFile(key: string, body: Buffer | string, contentType: string) {
     try {
