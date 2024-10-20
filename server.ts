@@ -1,6 +1,6 @@
 import fs from 'fs'
 import https from 'https'
-import express from 'express'
+import express, { Request, Response } from 'express'
 import session from "express-session";
 import cookieParser from 'cookie-parser'
 import stripeRouter from './routes/stripeRoute'
