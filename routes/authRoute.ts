@@ -6,16 +6,33 @@ import "../middleware/passport"
 /**
  * @swagger
  * /api/auth/login:
- *   get:
- *     summary: Login 
- *     description: Login in for SnapIn 
+ *   post:
+ *     summary: Authenticate user using local strategy
+ *     description: Authenticates the user with a JSON body containing username and password using the 'local' passport strategy. If successful, redirects to the profile page; if unsuccessful, redirects back to the login page.
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username of the user.
+ *                 example: johndoe@gmail.com
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *                 example: Passw0rd!
  *     responses:
- *       200:
- *         description: Redirects to Profile page if successful
- *         content:
- *           application/json:
- *           $ref: '#/components/schemas/Login'   
+ *       302:
+ *         description: Redirect to either /profile or /login depending on success or failure.
+ *       401:
+ *         description: Unauthorized, invalid credentials.
  */
+
 
 authRouter.post('/login', passport.authenticate('local', {
     successRedirect: '/profile',

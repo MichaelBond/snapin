@@ -2,10 +2,10 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 // Mock users database for simplicity
-const users = [{ id: 1, username: 'admin', password: 'password' }];
+const users = [{ id: 1, email: 'brycerbond@gmail.com', password: 'password', username: "bryce" }];
 
 passport.use(new LocalStrategy((username, password, done) => {
-    const user = users.find(user => user.username === username);
+    const user = users.find(user => user.email === username);
 
     if (!user) {
         return done(null, false, { message: 'Incorrect username.' });

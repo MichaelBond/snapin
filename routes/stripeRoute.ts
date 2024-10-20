@@ -5,30 +5,17 @@ import logger from "../utils/logger";
 
 /**
  * @swagger
- * /login:
- *   post:
- *     summary: User login
- *     description: Login a user with their email and password.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Login'
+ * /api/stripe/balance:
+ *   get:
+ *     summary: Retrieve Stripe account balance
+ *     description: Fetches the current balance of the Stripe account.
+ *     tags:
+ *       - Stripe
  *     responses:
  *       200:
- *         description: Successful login
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: A JWT token for the user
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *       400:
- *         description: Invalid credentials
+ *         description: Successfully retrieved the Stripe balance.
+ *       500:
+ *         description: Internal server error.
  */
 stripeRouter.get('/balance', async (req, res) => {
     try {

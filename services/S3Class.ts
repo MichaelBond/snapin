@@ -9,7 +9,6 @@ export default class S3Service {
   constructor() {
     this.bucketName = config.S3.BUCKET
     this.options = config.S3.OPTIONS
-    console.log('this.options ==> ', this.options)
     this.s3 = new AWS.S3(this.options);
   }
   async getAllBuckets() {

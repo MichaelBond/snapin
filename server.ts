@@ -79,7 +79,7 @@ if (ENV === "dev" || ENV === "docker") {
 }
 
 // AUTHORIZATION ROUTES
-app.use("/auth", authRouter)
+app.use("/api/auth", authRouter)
 
 app.use(isAuthenticated)
 app.use(userStoreMiddleware)
