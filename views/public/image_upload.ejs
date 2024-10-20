@@ -1,46 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Upload</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Photo Upload</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <style>
+    body {
+      padding-top: 50px;
+      background-color: #1a1a1a;  /* Dark background */
+      color: #f0f0f0;              /* Light text */
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 600px;
+      background-color: #333; /* Darker background for container */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      margin: auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      color: #ffffff;  /* White header text */
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      color: #f0f0f0;             /* Light text for file input */
+      background-color: #444;      /* Dark background for file input */
+      border: 1px solid #555;      /* Border for file input */
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #f0ad4e;
+      border-color: #eea236;
+      color: #1a1a1a;  /* Dark button text */
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #ec971f;
+      border-color: #d58512;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      button {
+        font-size: 1.1em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Upload a Photo</h1>
-    <input type="file" accept="image/*" capture="camera" id="fileInput">
-    <button onclick="uploadPhoto()">Upload Photo</button>
 
-    <script>
-        function uploadPhoto() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
+<div class="container">
+  <h1>Upload a Photo</h1>
+  <input type="file" accept="image/*" capture="camera" id="fileInput">
+  <button onclick="uploadPhoto()">Upload Photo</button>
+</div>
 
-            if (file) {
-                const formData = new FormData();
-                formData.append("BUCKET","snapin-backup-repo");
-                formData.append("PATH","gtm/uploads/");
-                formData.append('photo', file);
+<script>
+  function uploadPhoto() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
 
-                // Replace 'your_upload_endpoint' with your actual server endpoint
-                fetch('https://gtm.smartweb-pro.com/sys/s3/upload/secure', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Photo uploaded successfully!');
-                    } else {
-                        alert('Failed to upload photo.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while uploading the photo.');
-                });
-            } else {
-                alert('Please select a photo to upload.');
-            }
+    if (file) {
+      const formData = new FormData();
+      formData.append("BUCKET", "snapin-backup-repo");
+      formData.append("PATH", "gtm/uploads/");
+      formData.append('photo', file);
+
+      // Replace 'your_upload_endpoint' with your actual server endpoint
+      fetch('https://gtm.smartweb-pro.com/sys/s3/upload/secure', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        console.log(response)
+        if (response.ok) {
+          alert('Photo uploaded successfully!');
+        } else {
+          alert('Failed to upload photo.');
         }
-    </script>
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while uploading the photo.');
+      });
+    } else {
+      alert('Please select a photo to upload.');
+    }
+  }
+</script>
+
 </body>
 </html>

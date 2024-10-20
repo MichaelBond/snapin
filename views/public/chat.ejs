@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Chat Interaction</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <style>
+    /* Ensure the container adapts to the space it is placed in */
+    .chat-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: #1a1a1a; /* Dark background for chat */
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      color: #f0f0f0;
+    }
+
+    /* Chat window styling */
+    .chat-header {
+      background-color: #333;
+      padding: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+
+    /* Chat message bubbles */
+    .message {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message.bot {
+      justify-content: flex-start;
+    }
+
+    .message .message-content {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #444;
+      color: #f0f0f0;
+    }
+
+    .message.user .message-content {
+      background-color: #007bff; /* User message color */
+      color: #fff;
+    }
+
+    .message.bot .message-content {
+      background-color: #444; /* Bot message color */
+      color: #f0f0f0;
+    }
+
+    /* Chat input styling */
+    .chat-footer {
+      display: flex;
+      padding: 10px;
+      background-color: #333;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #555;
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+
+    .chat-footer button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .chat-footer button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive behavior */
+    @media (max-width: 768px) {
+      .chat-header {
+        font-size: 1em;
+      }
+
+      .message .message-content {
+        max-width: 85%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <span>Chat with Us</span>
+      <i class="fa fa-comments" aria-hidden="true"></i>
+    </div>
+
+    <!-- Chat Body -->
+    <div class="chat-body">
+      <div class="message bot">
+        <div class="message-content">Hello! How can I assist you today?</div>
+      </div>
+      <div class="message user">
+        <div class="message-content">Can you help me with my account?</div>
+      </div>
+    </div>
+
+    <!-- Chat Footer (Input and Send Button) -->
+    <div class="chat-footer">
+      <input type="text" placeholder="Type your message here..." />
+      <button type="button">Send</button>
+    </div>
+  </div>
+
+  <!-- Add any custom JavaScript functionality for handling chat interactions here -->
+  <script>
+    const chatBody = document.querySelector('.chat-body');
+    const inputField = document.querySelector('.chat-footer input');
+    const sendButton = document.querySelector('.chat-footer button');
+
+    // Function to send a message and add it to the chat
+    function sendMessage() {
+      const messageText = inputField.value.trim();
+      if (messageText) {
+        const userMessage = document.createElement('div');
+        userMessage.classList.add('message', 'user');
+        userMessage.innerHTML = `<div class="message-content">${messageText}</div>`;
+        chatBody.appendChild(userMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        inputField.value = ''; // Clear input
+      }
+    }
+
+    // Send message on button click
+    sendButton.addEventListener('click', sendMessage);
+
+    // Send message on Enter key press
+    inputField.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,16 +1,14 @@
-import AWS from 'aws-sdk';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, ListObjectsV2Command, CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import config from '../configs/config';
 import logger from '../utils/logger';
 
 export default class S3Service {
-  s3: AWS.S3;
-  bucketName: string;
-  options: any;
+  private s3Client: S3Client;
+  private bucketName: string;
 
   constructor(bucketName: string) {
     this.bucketName = bucketName;
-    this.s3 = new AWS.S3(config.AWS_S3_OPTIONS); // S3 options from config, including region and credentials
-    this.options = config.AWS_S3_OPTIONS;
+    this.s3Client = new S3Client({ region: config.AWS_S3_OPTIONS.region }); // Configure the S3 client with the region
   }
 
   // Uploads a file to S3
@@ -23,15 +21,12 @@ export default class S3Service {
         ContentType: contentType,
       };
 
-      logger.debug("S3:Uploading file", params);
+      logger.debug("S3: Uploading file", params);
 
-      const result = await this.s3.upload(params).promise();
+      const result = await this.s3Client.send(new PutObjectCommand(params));
       return { err: null, data: result };
     } catch (err: any) {
-      logger.error(`Error uploading file to S3: ${key}`, {
-        error: err,
-        key,
-      });
+      logger.error(`Error uploading file to S3: ${key}`, { error: err, key });
       return { err: err, data: null };
     }
   }
@@ -44,15 +39,12 @@ export default class S3Service {
         Key: key,
       };
 
-      logger.debug("S3:Downloading file", params);
+      logger.debug("S3: Downloading file", params);
 
-      const result = await this.s3.getObject(params).promise();
-      return { err: null, data: result.Body };
+      const result = await this.s3Client.send(new GetObjectCommand(params));
+      return { err: null, data: result.Body };  // result.Body will be a stream
     } catch (err: any) {
-      logger.error(`Error downloading file from S3: ${key}`, {
-        error: err,
-        key,
-      });
+      logger.error(`Error downloading file from S3: ${key}`, { error: err, key });
       return { err: err, data: null };
     }
   }
@@ -65,15 +57,12 @@ export default class S3Service {
         Key: key,
       };
 
-      logger.debug("S3:Deleting file", params);
+      logger.debug("S3: Deleting file", params);
 
-      const result = await this.s3.deleteObject(params).promise();
+      const result = await this.s3Client.send(new DeleteObjectCommand(params));
       return { err: null, data: result };
     } catch (err: any) {
-      logger.error(`Error deleting file from S3: ${key}`, {
-        error: err,
-        key,
-      });
+      logger.error(`Error deleting file from S3: ${key}`, { error: err, key });
       return { err: err, data: null };
     }
   }
@@ -86,15 +75,12 @@ export default class S3Service {
         Prefix: prefix,
       };
 
-      logger.debug("S3:Listing files", params);
+      logger.debug("S3: Listing files", params);
 
-      const result = await this.s3.listObjectsV2(params).promise();
+      const result = await this.s3Client.send(new ListObjectsV2Command(params));
       return { err: null, data: result.Contents };
     } catch (err: any) {
-      logger.error(`Error listing files from S3: ${prefix}`, {
-        error: err,
-        prefix,
-      });
+      logger.error(`Error listing files from S3: ${prefix}`, { error: err, prefix });
       return { err: err, data: null };
     }
   }
@@ -108,16 +94,12 @@ export default class S3Service {
         Key: destinationKey,
       };
 
-      logger.debug("S3:Copying file", params);
+      logger.debug("S3: Copying file", params);
 
-      const result = await this.s3.copyObject(params).promise();
+      const result = await this.s3Client.send(new CopyObjectCommand(params));
       return { err: null, data: result };
     } catch (err: any) {
-      logger.error(`Error copying file in S3: ${sourceKey} to ${destinationKey}`, {
-        error: err,
-        sourceKey,
-        destinationKey,
-      });
+      logger.error(`Error copying file in S3: ${sourceKey} to ${destinationKey}`, { error: err, sourceKey, destinationKey });
       return { err: err, data: null };
     }
   }
@@ -130,15 +112,12 @@ export default class S3Service {
         Key: key,
       };
 
-      logger.debug("S3:Getting file metadata", params);
+      logger.debug("S3: Getting file metadata", params);
 
-      const result = await this.s3.headObject(params).promise();
+      const result = await this.s3Client.send(new HeadObjectCommand(params));
       return { err: null, data: result };
     } catch (err: any) {
-      logger.error(`Error getting file metadata from S3: ${key}`, {
-        error: err,
-        key,
-      });
+      logger.error(`Error getting file metadata from S3: ${key}`, { error: err, key });
       return { err: err, data: null };
     }
   }

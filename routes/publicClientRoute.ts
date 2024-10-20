@@ -11,13 +11,28 @@ router.get("/", function (req, res) {
 router.get("/home", function (req, res) {
     res.render("auth/splash.ejs", { user: req?.user });
 });
-
+router.get("/signup", function (req, res) {
+    res.render("auth/signup.ejs", { user: req?.user, message: "Signup" });
+});
+router.get("/change-password", function (req, res) {
+    res.render("auth/changepassword.ejs", { user: req?.user, message: "Change Password" });
+});
+router.get("/chat", function (req, res) {
+    res.render("public/chat.ejs", { user: req?.user, message: "Chat" });
+});
+router.get("/reset-password", function (req, res) {
+    res.render("auth/resetpassword.ejs", { user: req?.user, message: "Reset Password" });
+});
 router.get("/security", function (req, res) {
     res.render("public/dodsecurity.ejs", { user: req.user });
 });
 router.get("/privacy", function (req, res) {
     res.render("public/privacy.ejs", { user: req.user });
 });
+router.get("/image-upload", function (req, res) {
+    res.render("public/image_upload.ejs", { user: req.user });
+});
+
 router.get("/cookies", function (req, res) {
     res.render("public/cookies.ejs", { user: req.user });
 });

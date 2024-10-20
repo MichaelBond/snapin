@@ -1,27 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-	<title>Node Authentication</title>
-  <link type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" ></link>
-  <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" ></link>
-	<style>
-		body 		{ padding-top:80px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security and Consent Notices</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  
+  <style>
+    body {
+      padding-top: 80px;
+      background-color: #1a1a1a; /* Dark background */
+      color: #f0f0f0;             /* Light text */
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 700px;  /* Restrict width for better readability */
+      background-color: #333; /* Darker background for container */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      margin: auto;
+    }
+
+    h1, h5 {
+      color: #ffffff;  /* White header text */
+    }
+
+    p {
+      color: #f0f0f0;  /* Light text for the body */
+      font-size: 1.1em;
+      line-height: 1.6em;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    h5 {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      h5 {
+        font-size: 1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      h5 {
+        font-size: 0.9em;
+      }
+      p {
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
+  <div class="col-sm-12">
+    <div class="text-center">
+      <h1>SECURITY AND CONSENT NOTICES</h1>
+      <h5>(as per AFI 33-219)</h5>
+    </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+    <p>
+      This is a Department of Defense computer system. This computer system, including all related equipment, networks, and network devices (specifically including Internet access) are provided only for authorized U.S. Government use. DoD computer systems may be monitored for all lawful purposes, including; ensuring authorized use, managing the system, facilitating protection against unauthorized access, and verifying security procedures, survivability, and operational security.
+    </p>
 
+    <p>
+      Monitoring includes active attacks by authorized DoD entities to test or verify the security of this system. During monitoring, information may be examined, recorded, copied, and used for authorized purposes. All information, including personal information, placed on or sent over this system may be monitored.
+    </p>
 
-<center><h1>SECURITY AND CONSENT NOTICES</h1>
-<h5>(as per AFI 33-219)</h5>
+    <p>
+      Use of this DoD computer system, authorized or unauthorized, constitutes consent to monitoring of this system. Unauthorized use may subject you to criminal prosecution. Evidence of unauthorized use collected during monitoring may be used for administrative, criminal, or other adverse action. Use of this system constitutes consent to monitoring for these purposes.
+    </p>
 
-<p>This is a Department of Defense computer system. This computer system, including all related equipment, networks, and network devices (specifically including Internet access) are provided only for authorized U.S. Government use. DoD computer systems may be monitored for all lawful purposes, including; ensuring authorized use, managing the system, facilitating protection against unauthorized access, and to verifying security procedures, survivability, and operational security. Monitoring includes active attacks by authorized DoD entities to test or verify the security of this system. During monitoring, information may be examined, recorded, copied, and used for authorized purposes. All information, including personal information, placed on or sent over this system may be monitored. Use of this DoD computer system, authorized or unauthorized, constitutes consent to monitoring of this system. Unauthorized use may subject you to criminal prosecution. Evidence of unauthorized use collected during monitoring may be used for administrative, criminal, or other adverse action. Use of this system constitutes consent to monitoring for these purposes.<p>
-
-
-</div>
+  </div>
 </div>
 </body>
 </html>
