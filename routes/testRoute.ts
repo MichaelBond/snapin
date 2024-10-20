@@ -66,19 +66,19 @@ testRouter.post('/zepcrm/cube/:id', async (req: express.Request, res: express.Re
     }
 })
 
-// testRouter.post("/crm/db/query/:id", async (req, res) => {
-//     const options = {
-//         cubeId: req.params.id,
-//         user: 33,
-//     };
+testRouter.post("/crm/db/query/:id", async (req, res) => {
+    const options = {
+        cubeId: req.params.id,
+        user: 33,
+    };
 
-//     try {
-//         const results = await handler.crmDbQuery(options, req.body)
-//         res.status(200).json(results.data);
-//     }
-//     catch (err: any) {
-//         res.status(err.status || 500).send(err.data)
-//     }
-// });
+    try {
+        const results = await handler.crmDbQuery(options, req.body)
+        res.status(200).json(results.data);
+    }
+    catch (err: any) {
+        res.status(err.status || 500).send(err.data)
+    }
+});
 
 export default testRouter
