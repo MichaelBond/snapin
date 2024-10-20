@@ -3,6 +3,20 @@ const authRouter = express.Router();
 import passport from 'passport'
 import "../middleware/passport"
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   get:
+ *     summary: Login 
+ *     description: Login in for SnapIn 
+ *     responses:
+ *       200:
+ *         description: Redirects to Profile page if successful
+ *         content:
+ *           application/json:
+ *           $ref: '#/components/schemas/Login'   
+ */
+
 authRouter.post('/login', passport.authenticate('local', {
     successRedirect: '/profile',
     failureRedirect: '/login',

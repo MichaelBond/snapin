@@ -15,6 +15,9 @@ import passport from 'passport';
 import isAuthenticated from './middleware/isAuthenticated'
 import privateClientRouter from './routes/privateClientRoute'
 import { userStoreMiddleware } from './middleware/userDataCapture'
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerOptions from './swaggerOptions';
 
 // Probably should not have especially in prod 
 // const cors = require("cors");
@@ -38,8 +41,10 @@ const blockedIps = [
   "184.168.120.241",
 ];
 
-const app = express();
 
+const app = express();
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Middleware 
 app.use(cookieParser());
 app.use(express.static(`${__dirname}/public`));
