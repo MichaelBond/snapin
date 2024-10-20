@@ -73,6 +73,7 @@ publicRouter.get("/healthcheck", (req, res) => {
 });
 
 app.use(publicRouter)
+
 if (ENV === "dev" || ENV === "docker") {
   app.use('/api/test', testRouter) // this is moved here so we can test without validation
 }

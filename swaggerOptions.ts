@@ -29,7 +29,7 @@ export default {
         },
         servers: [
             {
-                url: 'http://localhost:3000', // Base URL of your API
+                url: 'http://localhost:4000', // Base URL of your API
             },
         ],
     },
