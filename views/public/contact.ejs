@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <title>Landing Page - Subscription Options</title>
+  <title>Contact Us</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <style>
@@ -81,40 +81,32 @@
     footer ul li a:hover {
       color: #ec971f;
     }
-    .subscription {
+    .form-group label {
+      font-weight: 600;
+      color: #f0f0f0;
+    }
+    .form-control {
       background-color: #2a2a2a;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-      text-align: center;
+      color: #f0f0f0;
+      border: 1px solid #555;
+      margin-bottom: 15px;
     }
-    .subscription h2 {
-      color: #f0ad4e;
-    }
-    .subscription p {
-      font-size: 1.2em;
-      margin: 15px 0;
-    }
-    .subscription .price {
-      font-size: 2.5em;
+    .form-control:focus {
+      background-color: #3a3a3a;
       color: #ffffff;
     }
-    .btn-subscribe {
+    .btn-submit {
       background-color: #f0ad4e;
       border-color: #eea236;
       color: #1a1a1a;
       padding: 10px 20px;
       font-size: 1.2em;
     }
-    .btn-subscribe:hover {
+    .btn-submit:hover {
       background-color: #ec971f;
       border-color: #d58512;
     }
     @media (max-width: 768px) {
-      .subscription {
-        margin-bottom: 30px;
-      }
       header h1 {
         font-size: 2em;
       }
@@ -139,53 +131,33 @@
 
 <!-- Header Section -->
 <header>
-  <h1>Welcome to Our Subscription Service</h1>
+  <h1>Contact Us</h1>
 </header>
 
 <!-- Main Content Section -->
 <main class="container">
   <div class="row">
-    
-    <!-- Subscription Option 1 -->
-    <div class="col-md-3 col-sm-6">
-      <div class="subscription">
-        <h2>Basic Plan</h2>
-        <p>Get started with our basic features.</p>
-        <p class="price">$9.99/month</p>
-        <button class="btn btn-subscribe">Subscribe Now</button>
-      </div>
+    <div class="col-md-8 col-md-offset-2">
+      <h2>Get in Touch</h2>
+      <p>If you have any questions, feel free to reach out to us through the form below.</p>
+      
+      <!-- Contact Form -->
+      <form action="/submit-contact" method="POST">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-submit">Submit</button>
+      </form>
     </div>
-
-    <!-- Subscription Option 2 -->
-    <div class="col-md-3 col-sm-6">
-      <div class="subscription">
-        <h2>Standard Plan</h2>
-        <p>More features for growing needs.</p>
-        <p class="price">$19.99/month</p>
-        <button class="btn btn-subscribe">Subscribe Now</button>
-      </div>
-    </div>
-
-    <!-- Subscription Option 3 -->
-    <div class="col-md-3 col-sm-6">
-      <div class="subscription">
-        <h2>Premium Plan</h2>
-        <p>Unlock all features for your business.</p>
-        <p class="price">$29.99/month</p>
-        <button class="btn btn-subscribe">Subscribe Now</button>
-      </div>
-    </div>
-
-    <!-- Subscription Option 4 -->
-    <div class="col-md-3 col-sm-6">
-      <div class="subscription">
-        <h2>Enterprise Plan</h2>
-        <p>Custom solutions for large organizations.</p>
-        <p class="price">Contact Us</p>
-        <button class="btn btn-subscribe">Get in Touch</button>
-      </div>
-    </div>
-
   </div>
 </main>
 
@@ -198,11 +170,9 @@
       <div class="col-md-3 col-sm-6">
         <h4>Legal</h4>
         <ul>
-          <li><a href="/tandc">Terms & Conditions</a></li>
+          <li><a href="/tanc">Terms & Conditions</a></li>
           <li><a href="/license">License</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/cookies">Cookies Policy</a></li>
-          <li><a href="/cookies-consent">Consent Policy</a></li>
         </ul>
       </div>
 
@@ -211,7 +181,6 @@
         <h4>Resources</h4>
         <ul>
           <li><a href="/refunds">Refunds & Returns</a></li>
-          <li><a href="/security">DOD Security</a></li>
           <li><a href="/disclaimer">Disclaimer</a></li>
         </ul>
       </div>

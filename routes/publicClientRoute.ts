@@ -8,6 +8,27 @@ router.get("/login", (req, res) => {
 router.get("/", function (req, res) {
     res.render("auth/splash.ejs", { user: null });
 });
+router.get("/contact", function (req, res) {
+    res.render("public/contact.ejs", { user: null });
+});
+router.get("/about", function (req, res) {
+    res.render("public/about.ejs", { user: null });
+});
+router.get("/contact", function (req, res) {
+    res.render("public/contact.ejs", { user: null });
+});
+router.get("/security", function (req, res) {
+    res.render("public/dodSecurity.ejs", { user: null });
+});
+router.get("/blog", function (req, res) {
+    res.render("public/blog.ejs", { user: null });
+});
+router.get("/faq", function (req, res) {
+    res.render("public/faq.ejs", { user: null });
+});
+router.get("/cookies-consent", function (req, res) {
+    res.render("public/cookieConsent.ejs", { user: null });
+});
 router.get("/home", function (req, res) {
     res.render("auth/splash.ejs", { user: req?.user });
 });
@@ -32,7 +53,6 @@ router.get("/privacy", function (req, res) {
 router.get("/image-upload", function (req, res) {
     res.render("public/image_upload.ejs", { user: req.user });
 });
-
 router.get("/cookies", function (req, res) {
     res.render("public/cookies.ejs", { user: req.user });
 });

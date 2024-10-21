@@ -3,7 +3,7 @@ import * as mysqlController from '../controllers/mysqlController'
 import * as stripeController from '../controllers/stripeController'
 import * as chatgptController from '../controllers/chatgptController'
 import * as neo4jController from '../controllers/neo4jController'
-import * as s3Controller from '../controllers/s3Controller'
+import * as awsController from '../controllers/awsController'
 import { StripeEvents } from '../models/stripeModels'
 import logger from '../utils/logger'
 
@@ -13,7 +13,7 @@ import logger from '../utils/logger'
 export const bryceTest: any = async () => {
     await mssqlController.bryceSeeAllDbs()
     await neo4jController.getQuery("query")
-    return await s3Controller.getBuckets()
+    return await awsController.getBuckets()
 }
 
 export const stripeGetBalance: any = async () => {
@@ -43,6 +43,15 @@ export const mysqlCube: any = async (content: { id: number, params: any }) => {
 }
 export const mssqlCubeData: any = async (id: number) => {
     return await mssqlController.getCubeData({ cubeId: id })
+}
+export const awsGetBuckets: any = async () => {
+    return await awsController.getBuckets()
+}
+export const awsGetFiles: any = async (params: any) => {
+    return await awsController.getFiles(params)
+}
+export const awsDownloadFile: any = async (params: any) => {
+    return await awsController.downloadFile(params)
 }
 
 export const neo4jCube: any = async (content: { id: number }) => {

@@ -8,6 +8,22 @@ testRouter.get('/bryce', async (req, res) => {
     res.send(data)
 })
 
+testRouter.get('/aws/buckets', async (req, res) => {
+    const data = await handler.awsGetBuckets()
+    res.send(data)
+})
+
+testRouter.post('/aws/files', async (req, res) => {
+    const params = req.body
+    const data = await handler.awsGetFiles( params)
+    res.send(data)
+})
+
+testRouter.post('/aws/download/file', async (req, res) => {
+    const params = req.body
+    const data = await handler.awsDownloadFile( params)
+    res.send(data)
+})
 testRouter.get('/test', async (req: express.Request, res: express.Response) => {
     try {
         const response = await handler.mssqlTest();

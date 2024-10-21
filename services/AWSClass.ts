@@ -1,15 +1,32 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, ListObjectsV2Command, CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, ListBucketsCommand, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, ListObjectsV2Command, CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+//import { SecretsManagerClient, GetSecretValueCommand} from "@aws-sdk/client-secrets-manager";
 import config from '../configs/config';
 import logger from '../utils/logger';
 
-export default class S3Service {
+export default class AWSService {
   private s3Client: S3Client;
   private bucketName: string;
+  private AWS_ACCESS_KEY: string;
+  private AWS_SECRET_KEY: string;
+  //private secretsManagerClient: SecretsManagerClient
 
   constructor(bucketName: string) {
-    this.bucketName = bucketName;
-    this.s3Client = new S3Client({ region: config.default.AWS_S3_OPTIONS.region }); // Configure the S3 client with the region
+    this.bucketName = bucketName || config.AWS.BUCKET;
+    this.AWS_ACCESS_KEY = config.AWS.OPTIONS.credentials.accessKeyId
+    this.AWS_SECRET_KEY = config.AWS.OPTIONS.credentials.secretAccessKey
+ 
+    this.s3Client = new S3Client( { 
+      credentials: {
+        accessKeyId: this.AWS_ACCESS_KEY,
+        secretAccessKey: this.AWS_SECRET_KEY
+      },
+     // s3ForcePathStyle: true,
+     // signatureVersion: "v4",
+      region: "us-east-1",
+    })
+
   }
+ 
   // Uploads a file to S3
   async uploadFile(key: string, body: Buffer | string, contentType: string) {
     try {
@@ -31,11 +48,11 @@ export default class S3Service {
   }
 
   // Downloads a file from S3
-  async downloadFile(key: string) {
+  async downloadFile( location: { bucket: string, key: string}) {
     try {
       const params = {
-        Bucket: this.bucketName,
-        Key: key,
+        Bucket: location.bucket,
+        Key: location.key,
       };
 
       logger.debug("S3: Downloading file", params);
@@ -43,7 +60,7 @@ export default class S3Service {
       const result = await this.s3Client.send(new GetObjectCommand(params));
       return { err: null, data: result.Body };  // result.Body will be a stream
     } catch (err: any) {
-      logger.error(`Error downloading file from S3: ${key}`, { error: err, key });
+      logger.error(`Error downloading file from S3: ${location.key}`, { err: err, data: location.key });
       return { err: err, data: null };
     }
   }
@@ -67,11 +84,11 @@ export default class S3Service {
   }
 
   // Lists files in a specific S3 bucket prefix (directory)
-  async listFiles(prefix: string) {
+  async listFiles( location: { bucket: string, path: string}) {
     try {
       const params = {
-        Bucket: this.bucketName,
-        Prefix: prefix,
+        Bucket: location.bucket,
+        Prefix: location.path,
       };
 
       logger.debug("S3: Listing files", params);
@@ -79,7 +96,7 @@ export default class S3Service {
       const result = await this.s3Client.send(new ListObjectsV2Command(params));
       return { err: null, data: result.Contents };
     } catch (err: any) {
-      logger.error(`Error listing files from S3: ${prefix}`, { error: err, prefix });
+      logger.error(`Error listing files from S3: ${location.path}`, { error: err, data: location.path });
       return { err: err, data: null };
     }
   }
@@ -137,5 +154,17 @@ export default class S3Service {
   async formattedListFiles(prefix: string, format: any) {
     const result = await this.listFiles(prefix);
     return format(result);
+  }
+
+  // Executes a Bucket listing and formats the result
+  async getBuckets() {
+    try {
+      const result = await this.s3Client.send(new ListBucketsCommand({}));
+      logger.debug("S3: Listing buckets", result.Buckets);
+      return { err: null, data: result.Buckets };
+    } catch (err: any) {
+      logger.error("Error listing S3 buckets", { error: err });
+      return { err: err, data: null };
+    }
   }
 }
