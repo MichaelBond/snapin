@@ -41,6 +41,9 @@ router.get("/change-password", function (req, res) {
 router.get("/chat", function (req, res) {
     res.render("public/chat.ejs", { user: req?.user, message: "Chat" });
 });
+router.get("/chatbot", function (req, res) {
+    res.render("public/chatbot.ejs", { user: req?.user, message: "Chat" });
+});
 router.get("/reset-password", function (req, res) {
     res.render("auth/resetpassword.ejs", { user: req?.user, message: "Reset Password" });
 });
