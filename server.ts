@@ -56,18 +56,19 @@ publicRouter.get("/healthcheck", (req, res) => {
 });
 
 app.use(publicRouter)
-if (ENV === "dev" || ENV === "docker") {
-  app.use('/api/test', testRouter) // this is moved here so we can test without validation
+if ( ENV === 'dev' || ENV === 'docker') {
+  app.use('/api/test', testRouter)
 }
 
 // AUTHORIZATION ROUTES
 app.use("/auth", authRouter)
 
-app.use(isAuthenticated)
+//app.use(isAuthenticated)
 app.use(userStoreMiddleware)
 // Protected routes
 app.use(privateClientRouter)
-app.use('/api/stripe', stripeRouter)
+//app.use('/api/test', testRouter)
+app.use('/api/stripe', isAuthenticated, stripeRouter)
 
 if (ENV === "dev" || ENV === "docker") {
   // When running locally 

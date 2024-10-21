@@ -127,10 +127,22 @@ const configs: Record<Environment, any> = {
             passwordFree: process.env.NEO4J_PASSWORD_FREE,
             password: process.env.NEO4J_PASSWORD,
             database: process.env.NEO4J_DATABASE
+        },
+        AWS: {
+            OPTIONS: {
+                credentials: {
+                    accessKeyId: process.env.AWS_ACCESS_KEY,
+                    secretAccessKey: process.env.AWS_SECRET_KEY
+                },
+                s3ForcePathStyle: true,
+                signatureVersion: "v4",
+                region: "us-east-1",
+            },
+            BUCKET: process.env.AWS_BUCKET_NAME
         }
     },
     test: {},
     prod: {}
 }
-
+console.log(configs[env])
 export default configs[env]

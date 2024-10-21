@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>FAQ - Frequently Asked Questions</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    h1, h2 {
+      color: #f0ad4e;
+    }
+    p, ul {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    a {
+      color: #f0ad4e;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #ec971f;
+    }
+    .faq-section {
+      margin-bottom: 20px;
+    }
+    .faq-section h3 {
+      cursor: pointer;
+      padding: 10px;
+      background-color: #444;
+      color: #f0ad4e;
+      border-radius: 5px;
+    }
+    .faq-answer {
+      display: none;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #222;
+      border-radius: 5px;
+    }
+    footer {
+      background-color: #333;
+      padding: 20px 0;
+      color: #f0f0f0;
+      text-align: center;
+      margin-top: auto;
+    }
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Frequently Asked Questions</h1>
+  
+  <div class="faq-section">
+    <h3>What services does Quantrex Research Inc offer?</h3>
+    <div class="faq-answer">
+      <p>We offer a variety of services, including software development, AI and machine learning, cloud solutions, and technology consulting. We focus on research-driven, innovative solutions to solve modern business challenges.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h3>How can I contact Quantrex Research Inc?</h3>
+    <div class="faq-answer">
+      <p>You can reach out to us via our <a href="/contact">contact page</a> or send us an email at support@quantrex.com. We aim to respond to all inquiries within 24-48 hours.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h3>Do you provide custom software solutions?</h3>
+    <div class="faq-answer">
+      <p>Yes! We specialize in creating custom software tailored to the unique needs of your business. Our solutions are scalable and flexible, ensuring they grow with your business.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h3>What industries do you serve?</h3>
+    <div class="faq-answer">
+      <p>We work with a variety of industries, including healthcare, finance, e-commerce, and more. Our versatile team can adapt to the specific requirements of any industry.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Quantrex Research Inc. All rights reserved.</p>
+</footer>
+
+<script>
+  // FAQ Toggle Script
+  const faqSections = document.querySelectorAll('.faq-section h3');
+  faqSections.forEach(section => {
+    section.addEventListener('click', () => {
+      const answer = section.nextElementSibling;
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -12,6 +12,8 @@
   "author": "Michael E Bond",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.675.0",
+    "@aws-sdk/client-secrets-manager": "^3.675.0",
     "@pinecone-database/pinecone": "^3.0.3",
     "@types/passport": "^1.0.16",
     "@types/passport-local": "^1.0.38",

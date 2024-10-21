@@ -9,7 +9,7 @@ authRouter.post('/login', passport.authenticate('local', {
     failureFlash: false,
 }));
 
-authRouter.post('/logout', (req, res, next) => {
+authRouter.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
         res.redirect('/login');
